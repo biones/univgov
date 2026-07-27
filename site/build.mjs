@@ -299,6 +299,8 @@ const campaignSources = {
   contact: "https://www.mhlw.go.jp/otoiawase/index.html",
 };
 
+const campaignUrl = "https://kurashi-no-saiteiten.iijimasat.chatgpt.site/";
+
 function campaignPage() {
   const cpiIncrease = (((111.9 / 94.9) - 1) * 100).toFixed(1);
   return shell({
@@ -306,8 +308,8 @@ function campaignPage() {
     description: "生活扶助基準を一時的な加算ではなく、物価と必需品価格に継続して連動させることを求める市民キャンペーン。",
     active: "campaign",
     bodyClass: "campaign-page",
-    canonical: "https://univgov.pages.dev/seikatsuhogo/",
-    ogImage: "https://univgov.pages.dev/assets/campaign-og.png",
+    canonical: campaignUrl,
+    ogImage: `${campaignUrl}assets/campaign-og.png`,
     content: `
       <section class="campaign-hero" id="top">
         <div class="campaign-hero__copy">
@@ -480,13 +482,13 @@ function campaignPage() {
 ・算定式と世帯別の影響を公開
 
 署名：https://chng.it/w2Yyn4wB4R
-根拠と要望文：https://univgov.pages.dev/seikatsuhogo/
+根拠と要望文：https://kurashi-no-saiteiten.iijimasat.chatgpt.site/
 
 ※同じ文の連投はせず、各掲示板のルールを守ってください。</pre>
           </article>
           <article>
             <div class="copy-head"><div><span>X・SNS</span><h3>共有文</h3></div><button type="button" data-copy-target="social-copy">コピー</button></div>
-            <pre id="social-copy">2013→2025年で総合物価は約17.9%上昇。生活扶助に必要なのは一時加算だけでなく、食料・光熱費の値上がりに毎年追いつく透明な仕組みです。最低生活費を物価に連動させよう。署名と根拠はこちら→ https://univgov.pages.dev/seikatsuhogo/ #くらしの最低線</pre>
+            <pre id="social-copy">2013→2025年で総合物価は約17.9%上昇。生活扶助に必要なのは一時加算だけでなく、食料・光熱費の値上がりに毎年追いつく透明な仕組みです。最低生活費を物価に連動させよう。署名と根拠はこちら→ https://kurashi-no-saiteiten.iijimasat.chatgpt.site/ #くらしの最低線</pre>
           </article>
           <article class="copy-visually-hidden">
             <pre id="phone-copy">生活扶助基準について意見を伝えたいです。物価上昇への対応を一時加算だけで終わらせず、毎年の物価連動として制度化し、算定根拠を公開してください。2026年の検証には受給当事者の生活実態を反映してください。この意見を担当部署に記録してください。</pre>

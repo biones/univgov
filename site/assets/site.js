@@ -92,7 +92,7 @@ document.querySelector("[data-share-campaign]")?.addEventListener("click", async
   const shareData = {
     title: "くらしの最低線",
     text: "最低生活費を、物価に連動させよう。",
-    url: "https://univgov.pages.dev/seikatsuhogo/",
+    url: "https://kurashi-no-saiteiten.iijimasat.chatgpt.site/",
   };
   if (navigator.share) {
     try {
