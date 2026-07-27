@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node site/build.mjs",
+    "build": "node campaign/build.mjs",
+    "build:univgov": "node site/build.mjs",
     "dev": "npm run build && wrangler dev",
     "deploy": "npm run build && wrangler pages deploy dist --project-name univgov --branch main",
     "check": "npm run build"
