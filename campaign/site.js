@@ -32,7 +32,7 @@ document.querySelectorAll("[data-copy-target]").forEach((button) => {
 document.querySelector("[data-share]")?.addEventListener("click", async () => {
   const shareData = {
     title: "くらしの最低線",
-    text: "食費分を、食料物価に連動させよう。",
+    text: "雇われているだけで、価値が生まれるわけではない。生存権は労働へのご褒美ではない。",
     url: "https://kurashi-saiteiten.pages.dev/",
   };
 

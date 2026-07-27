@@ -190,6 +190,25 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .priority-statement h3 { margin: 18px 0 24px; color: var(--orange); font-size: clamp(30px,4vw,52px); letter-spacing: -.05em; line-height: 1.4; }
 .priority-statement small { display: block; max-width: 900px; color: #9dabb1; font-size: 11px; }
 
+.work-value { background: #dbe0d2; }
+.work-thesis { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: end; max-width: 1180px; margin: 0 auto 24px; padding: 34px; border: 2px solid var(--ink); background: var(--ivory); }
+.work-thesis h3 { max-width: 900px; margin: 0 0 18px; color: var(--orange); font-size: clamp(27px,3.5vw,46px); letter-spacing: -.05em; line-height: 1.4; }
+.work-thesis p { max-width: 850px; margin: 0; font-size: clamp(17px,2vw,23px); line-height: 1.75; }
+.work-thesis strong { color: var(--orange); }
+.work-thesis a { color: var(--ink); font-size: 11px; font-weight: 700; white-space: nowrap; text-underline-offset: 3px; }
+.value-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; max-width: 1180px; margin: auto; border: 2px solid var(--ink); background: var(--ink); }
+.value-grid article { min-height: 350px; padding: 30px; background: var(--paper); }
+.value-grid span { color: var(--orange); font: 700 10px var(--mono); letter-spacing: .06em; }
+.value-grid h3 { margin: 44px 0 20px; font-size: clamp(22px,2.3vw,31px); letter-spacing: -.04em; line-height: 1.45; }
+.value-grid p { margin: 0; color: #44535a; font-size: 13px; }
+.rights-statement { position: relative; max-width: 1180px; margin: 24px auto 0; padding: 42px; color: #fff; background: var(--orange); overflow: hidden; }
+.rights-statement::after { content: "RIGHT TO LIVE"; position: absolute; right: -15px; bottom: -22px; color: rgba(255,255,255,.12); font: 700 clamp(46px,8vw,105px)/1 var(--mono); white-space: nowrap; }
+.rights-statement > * { position: relative; z-index: 1; }
+.rights-statement > span { font: 700 10px var(--mono); letter-spacing: .08em; }
+.rights-statement p { max-width: 850px; margin: 18px 0 6px; font-size: 17px; }
+.rights-statement h3 { margin: 0 0 18px; font-size: clamp(35px,5vw,67px); letter-spacing: -.06em; line-height: 1.25; }
+.rights-statement small { display: block; max-width: 800px; font-size: 11px; }
+
 .requests { background: var(--paper); }
 .request-list { max-width: 1180px; margin: 0 auto; padding: 0; border-top: 2px solid var(--ink); list-style: none; }
 .request-list li { display: grid; grid-template-columns: 120px 1fr; border-bottom: 1px solid var(--line); }
@@ -287,6 +306,11 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
   .priority-grid { grid-template-columns: 1fr; }
   .priority-grid article { min-height: 330px; }
   .priority-statement { padding: 28px; }
+  .work-thesis { grid-template-columns: 1fr; padding: 26px; }
+  .work-thesis a { white-space: normal; }
+  .value-grid { grid-template-columns: 1fr; }
+  .value-grid article { min-height: 280px; }
+  .rights-statement { padding: 28px; }
   .number-card { min-height: 220px; }
   .food-chart { grid-template-columns: 1fr; }
   .chart-bars { gap: 8px; height: 230px; }
