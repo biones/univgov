@@ -1,15 +1,7 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "univgov-orbit",
+  "name": "kurashi-saiteiten",
   "compatibility_date": "2026-07-15",
   "compatibility_flags": ["nodejs_compat"],
-  "assets": {
-    "directory": "./dist",
-    "html_handling": "auto-trailing-slash",
-    "not_found_handling": "404-page"
-  },
-  "observability": {
-    "enabled": true,
-    "head_sampling_rate": 0.01
-  }
+  "pages_build_output_dir": "./dist/client"
 }

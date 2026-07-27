@@ -174,6 +174,22 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .logic-strip span { color: var(--orange); font-weight: 800; }
 .logic-strip p { margin: 0; font-size: clamp(17px,2vw,24px); }
 
+.priority { color: #fff; background: var(--ink); }
+.priority .section-head > p:last-child { color: #c2ccd1; }
+.priority-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; max-width: 1180px; margin: auto; }
+.priority-grid article { min-height: 390px; padding: 30px; border: 1px solid rgba(255,255,255,.4); background: rgba(255,255,255,.04); }
+.priority-grid article > span { color: #bdc8cd; font: 700 10px var(--mono); letter-spacing: .06em; }
+.priority-grid article > strong { display: block; margin: 34px 0 23px; color: var(--orange); font: 700 clamp(37px,4.2vw,57px)/1 var(--mono); letter-spacing: -.06em; }
+.priority-grid h3 { margin: 0 0 12px; font-size: 20px; line-height: 1.5; }
+.priority-grid p { margin: 0 0 24px; color: #c6d0d4; font-size: 13px; }
+.priority-grid a { color: #fff; font-size: 11px; text-underline-offset: 3px; }
+.priority-grid .priority-welfare { border-color: var(--orange); }
+.priority-statement { max-width: 1180px; margin: 58px auto 0; padding: 42px; border: 2px solid var(--orange); background: #10232f; }
+.priority-statement p { margin: 0; color: #c6d0d4; font-size: 16px; }
+.priority-statement p strong { color: #fff; }
+.priority-statement h3 { margin: 18px 0 24px; color: var(--orange); font-size: clamp(30px,4vw,52px); letter-spacing: -.05em; line-height: 1.4; }
+.priority-statement small { display: block; max-width: 900px; color: #9dabb1; font-size: 11px; }
+
 .requests { background: var(--paper); }
 .request-list { max-width: 1180px; margin: 0 auto; padding: 0; border-top: 2px solid var(--ink); list-style: none; }
 .request-list li { display: grid; grid-template-columns: 120px 1fr; border-bottom: 1px solid var(--line); }
@@ -202,6 +218,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .copy-head button { min-width: 86px; padding: 8px 13px; border: 1px solid var(--ink); color: #fff; background: var(--ink); font-size: 12px; font-weight: 700; cursor: pointer; }
 .copy-head button:hover { color: var(--ink); background: #fff; }
 .copy-stack pre { max-height: 370px; margin: 0; padding: 24px; color: #263942; background: #fff; font: 400 13px/1.8 var(--sans); white-space: pre-wrap; overflow: auto; }
+.copy-addendum { margin: 0; padding: 18px 24px; border-top: 1px dashed var(--line); color: #536168; background: var(--ivory); font-size: 12px; }
 
 .faq { background: var(--ivory); }
 .faq-list { max-width: 980px; margin: auto; border-top: 2px solid var(--ink); }
@@ -267,6 +284,9 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
   .section-head { grid-template-columns: 1fr; gap: 14px; }
   .section-head > p:last-child { grid-column: 1; }
   .number-grid, .action-grid { grid-template-columns: 1fr; }
+  .priority-grid { grid-template-columns: 1fr; }
+  .priority-grid article { min-height: 330px; }
+  .priority-statement { padding: 28px; }
   .number-card { min-height: 220px; }
   .food-chart { grid-template-columns: 1fr; }
   .chart-bars { gap: 8px; height: 230px; }

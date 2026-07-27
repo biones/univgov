@@ -16,7 +16,7 @@ for (const name of ["index.html", "404.html"]) {
   await cp(resolve(source, name), resolve(out, name));
 }
 
-for (const name of ["styles.css", "site.js", "og.png"]) {
+for (const name of ["styles.css", "site.js", "og-priority.png"]) {
   await cp(resolve(source, name), resolve(client, "assets", name));
   await cp(resolve(source, name), resolve(out, "assets", name));
 }

@@ -33,7 +33,7 @@ document.querySelector("[data-share]")?.addEventListener("click", async () => {
   const shareData = {
     title: "くらしの最低線",
     text: "食費分を、食料物価に連動させよう。",
-    url: "https://kurashi-no-saiteiten.iijimasat.chatgpt.site/",
+    url: "https://kurashi-saiteiten.pages.dev/",
   };
 
   if (navigator.share) {
