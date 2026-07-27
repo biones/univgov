@@ -1,0 +1,15 @@
+{
+  "name": "univgov-orbit",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node site/build.mjs",
+    "dev": "npm run build && wrangler dev",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name univgov --branch main",
+    "check": "npm run build"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
