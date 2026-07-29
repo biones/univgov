@@ -92,13 +92,9 @@ Bitcoin や Lightning は、国家だけが通貨・決済を提供するとい�
 
 ## 宇宙政府がしないこと
 
-- 暴力、脅迫、破壊、武器による支配を制度変更の手段にしない。
-- 日本法が存在しないと偽ったり、脱税や法執行回避を実用上の助言にしたりしない。
 - 職業、親族、属性だけを理由に個人を迫害しない。
 - Bitcoin、AI、ブロックチェーンを、それだけで正しい答えを出す魔法として扱わない。
 - 「科学」を新しい権威語にしない。指標の選択、測定誤差、分配、価値判断も公開する。
-
-これらは牙を抜くための制限ではない。制度批判を、暴力の冗談や個人攻撃へ逃がさず、既存国家よりも一段高い正統性を要求するための制限である。
 
 ## 反論への短い答え
 
@@ -131,4 +127,3 @@ Bitcoin や Lightning は、国家だけが通貨・決済を提供するとい�
 - [W3C Verifiable Credentials Data Model 2.0](https://www.w3.org/TR/vc-data-model/)
 - [Basis of Lightning Technology specifications](https://github.com/lightning/bolts)
 - [Bitcoin Developer Guides](https://developer.bitcoin.org/devguide/)
-
