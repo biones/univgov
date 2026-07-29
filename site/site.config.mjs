@@ -7,6 +7,18 @@ export const site = {
 
 export const articles = [
   {
+    slug: "law-is-disposable",
+    displayTitle: "LAW IS DISPOSABLE — 法律を神棚からゴミ箱へ",
+    source: "site/content/law-is-disposable.md",
+    label: "制度批判",
+    date: "2026-07-30",
+    read: "9 min",
+    accent: "orange",
+    featured: true,
+    ogImage: "law-is-disposable-og.png",
+    summary: "法律は正義でも民意でもない。権力が書いた暫定仕様書を神棚から降ろし、修正・廃止・交換できる道具へ戻す。",
+  },
+  {
     slug: "state-as-interoperability-layer",
     displayTitle: "STATE AS A PROTOCOL — 国家を互換レイヤーへ",
     source: "site/content/state-as-interoperability-layer.md",

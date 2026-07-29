@@ -263,11 +263,14 @@ function homepage(renderedArticles) {
 
 function articlePage(article, rendered) {
   const toc = rendered.toc.map(({ id, text }) => `<a href="#${id}">${escapeHtml(text)}</a>`).join("");
+  const canonical = `https://univgov.pages.dev/articles/${article.slug}`;
   return shell({
     title: `${rendered.title} — ${site.name}`,
     description: article.summary,
     active: "articles",
     bodyClass: `article-page accent-${article.accent}`,
+    canonical,
+    ogImage: article.ogImage ? `https://univgov.pages.dev/assets/${article.ogImage}` : "",
     content: `
       <article class="article-shell">
         <header class="article-hero">
