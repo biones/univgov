@@ -70,7 +70,7 @@ button, input { font: inherit; }
 .manifesto-band h2 em { color: #d5e8f6; font-style: normal; }
 .manifesto-band a { display: inline-block; margin-top: 36px; color: #fff; font-size: 14px; }
 
-.principles { background: #fff; }
+.principles { scroll-margin-top: 64px; background: #fff; }
 .principle-list { max-width: 1180px; margin: 0 auto; padding: 0; border-top: 1px solid var(--line); list-style: none; }
 .principle-list li { display: grid; grid-template-columns: 64px minmax(160px,.5fr) 1fr; gap: 24px; align-items: baseline; padding: 23px 0; border-bottom: 1px solid var(--line); }
 .principle-list span { color: var(--blue); font-size: 12px; font-weight: 700; }

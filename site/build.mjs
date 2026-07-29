@@ -128,7 +128,7 @@ const nav = (active = "") => `
     <nav aria-label="メインナビゲーション">
       <a href="/">HOME</a>
       <a ${active === "articles" ? 'aria-current="page"' : ""} href="/#articles">ARTICLES</a>
-      <a href="/articles/doctrine-v2">7 RULES</a>
+      <a href="/#rules">7 RULES</a>
       <a href="/articles/space-law-v1">SPACE LAW</a>
       <button class="search-trigger" type="button" data-search-open aria-label="記事を検索">SEARCH</button>
     </nav>
@@ -214,7 +214,7 @@ function homepage(renderedArticles) {
           <p class="lead">UNIVGOVは、国がひとまとめにしているID、ルール、通貨、資格、行政サービス、コミュニティを、独立したモジュールへ分解する市民プロジェクトです。</p>
           <p class="lead">新しい領土や支配者は作りません。比較できる、テストできる、いつでもEXITできる。そんなガバナンス・プロトコルを実装します。</p>
           <div class="hero-actions">
-            <a class="button primary" href="/articles/doctrine-v2">READ 7 RULES</a>
+            <a class="button primary" href="#rules">READ 7 RULES</a>
             <a class="button ghost" href="#articles">VIEW ARTICLES</a>
           </div>
         </div>
@@ -231,7 +231,7 @@ function homepage(renderedArticles) {
         <a href="/articles/hundred-year-thesis">READ THE 100 YEAR THESIS ↗</a>
       </section>
 
-      <section class="principles" aria-labelledby="principles-title">
+      <section class="principles" id="rules" aria-labelledby="principles-title">
         <div class="section-head"><div><span>02 / DESIGN RULES</span><h2 id="principles-title">7 rules for the protocol</h2></div><p>新しい権威を作るのではなく、システムが肥大化しない設計ルールを先に決める。</p></div>
         <ol class="principle-list">${principles.map(([n, title, text]) => `<li><span>${n}</span><h3>${title}</h3><p>${text}</p></li>`).join("")}</ol>
       </section>
