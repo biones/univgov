@@ -130,7 +130,6 @@ const nav = (active = "") => `
       <a ${active === "articles" ? 'aria-current="page"' : ""} href="/#articles">ARTICLES</a>
       <a href="/articles/doctrine-v2">7 RULES</a>
       <a href="/articles/space-law-v1">SPACE LAW</a>
-      <a ${active === "campaign" ? 'aria-current="page"' : ""} href="/seikatsuhogo/">くらしの最低線</a>
       <button class="search-trigger" type="button" data-search-open aria-label="記事を検索">SEARCH</button>
     </nav>
   </header>`;
@@ -220,15 +219,6 @@ function homepage(renderedArticles) {
           </div>
         </div>
       </section>
-
-      <aside class="campaign-promo" aria-label="くらしの最低線キャンペーン">
-        <div>
-          <span>PUBLIC CAMPAIGN / 2026</span>
-          <h2>最低生活費を、物価に連動させよう。</h2>
-          <p>2013年から2025年までに総合物価は約17.9%上昇。一時加算ではなく、毎年追いつく透明な仕組みを求めます。</p>
-        </div>
-        <a href="/seikatsuhogo/">根拠と行動を見る <b>↗</b></a>
-      </aside>
 
       <section class="featured-section" aria-labelledby="featured-title">
         <div class="section-head"><div><span>01 / LATEST POSTS</span><h2 id="featured-title">New from UNIVGOV</h2></div><p>アイデアを宣言で終わらせず、動くシステムへ変えるための最新ノート。</p></div>
@@ -560,14 +550,12 @@ async function write(path, contents) {
 async function prepareSitesOutput() {
   const client = resolve(out, "client");
   await mkdir(client, { recursive: true });
-  for (const entry of ["index.html", "404.html", "articles", "assets", "seikatsuhogo"]) {
+  for (const entry of ["index.html", "404.html", "articles", "assets"]) {
     await cp(resolve(out, entry), resolve(client, entry), { recursive: true });
   }
   await write("server/index.js", `export default {
   async fetch(request, env) {
-    const url = new URL(request.url);
-    if (url.pathname === "/") url.pathname = "/seikatsuhogo/";
-    return env.ASSETS.fetch(new Request(url, request));
+    return env.ASSETS.fetch(request);
   },
 };
 `);
@@ -585,7 +573,6 @@ async function build() {
   for (const article of articles) {
     await write(`articles/${article.slug}.html`, articlePage(article, renderedArticles.get(article.slug)));
   }
-  await write("seikatsuhogo/index.html", campaignPage());
   await write("404.html", shell({
     title: `404 — ${site.name}`,
     description: "ページが見つかりません。",
@@ -599,7 +586,7 @@ async function build() {
   }))));
   await cp(resolve(root, "site/assets"), resolve(out, "assets"), { recursive: true });
   await prepareSitesOutput();
-  console.log(`Built ${articles.length} articles and the campaign page into dist/`);
+  console.log(`Built the UNIVGOV homepage and ${articles.length} articles into dist/`);
 }
 
 await build();

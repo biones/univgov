@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "build": "node campaign/build.mjs",
+    "build:univgov": "node site/build.mjs",
     "dev": "npm run build && wrangler dev",
     "deploy": "npm run build && wrangler pages deploy dist/client --project-name kurashi-saiteiten --branch main",
+    "deploy:univgov": "npm run build:univgov && wrangler pages deploy dist/client --project-name univgov --branch main",
     "check": "npm run build"
   },
   "devDependencies": {

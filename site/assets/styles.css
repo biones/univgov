@@ -47,22 +47,6 @@ button, input { font: inherit; }
 .button.ghost { color: var(--blue); background: #fff; }
 .button.ghost:hover { background: #f1f5f8; }
 
-.campaign-promo {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 35px;
-  align-items: center;
-  padding: 34px clamp(24px,6vw,92px);
-  color: #fff;
-  background: #e85d2a;
-}
-.campaign-promo > div { max-width: 950px; }
-.campaign-promo span { font: 700 10px var(--mono); letter-spacing: .1em; }
-.campaign-promo h2 { margin: 7px 0 3px; font-size: clamp(23px,3vw,36px); line-height: 1.35; }
-.campaign-promo p { margin: 0; color: rgba(255,255,255,.9); font-size: 13px; }
-.campaign-promo > a { padding: 13px 18px; border: 1px solid #fff; color: #fff; font-size: 12px; font-weight: 700; text-decoration: none; white-space: nowrap; }
-.campaign-promo > a:hover { color: #e85d2a; background: #fff; }
-
 .featured-section, .principles, .archive { padding: 90px clamp(24px, 6vw, 92px); }
 .featured-section, .archive { background: var(--soft); }
 .section-head { display: grid; grid-template-columns: 1fr minmax(280px, 430px); gap: 30px; align-items: end; max-width: 1180px; margin: 0 auto 42px; }
@@ -156,7 +140,7 @@ button, input { font: inherit; }
 .not-found h1 { margin: 15px 0; font-size: clamp(45px,7vw,90px); }
 .not-found p { margin: 0 0 32px; color: var(--muted); }
 
-/* くらしの最低線 campaign */
+/* Retained layout primitives for archived standalone pages. */
 .campaign-page {
   --campaign-ink: #152a38;
   --campaign-orange: #e85d2a;
@@ -466,8 +450,6 @@ button, input { font: inherit; }
   .article-meta { margin-top: 50px; flex-wrap: wrap; }
   .article-layout { padding-block: 60px 90px; }
   .prose { font-size: 15px; }
-  .campaign-promo { grid-template-columns: 1fr; gap: 20px; }
-  .campaign-promo > a { width: 100%; text-align: center; }
   .campaign-hero { min-height: auto; padding: 64px 22px 82px; }
   .campaign-hero::before { left: 22px; width: 6px; }
   .campaign-hero__copy { padding-left: 18px; }
