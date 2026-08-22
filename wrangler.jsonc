@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "univgov",
+  "compatibility_date": "2026-07-15",
+  "compatibility_flags": ["nodejs_compat"],
+  "pages_build_output_dir": "./dist/client",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "univgov-db",
+      "database_id": "c10f83dd-ecdc-48fd-af4e-855faa1017b1"
+    }
+  ],
+  "vars": {
+    "GOOGLE_CLIENT_ID": "698222404877-286s6s3946n8rkqq3ihucsdogsq14pdo.apps.googleusercontent.com"
+  }
+}
