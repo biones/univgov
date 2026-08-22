@@ -1,13 +1,3 @@
-node_modules/
-dist/
-.wrangler/
 .DS_Store
-site_snapshots/
-\[LINE\]*
-main.md
-mentalmamoru_main.md
-oc_log_strategy.md
-site_rebuild_plan.md
-source_audit.md
-strategy_v2.md
-univgov_main.md
+*.tmp
+*.log
