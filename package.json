@@ -9,9 +9,14 @@
     "dev": "npm run build && wrangler dev",
     "deploy": "npm run build && wrangler pages deploy dist/client --project-name kurashi-saiteiten --branch main",
     "deploy:univgov": "npm run build:univgov && wrangler pages deploy dist/client --project-name univgov --branch main",
+    "generate:md": "node scripts/generate_univgov_complete_md.mjs",
+    "utm": "node scripts/generate_utm_links.mjs",
     "check": "npm run build"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.4"
   }
 }
