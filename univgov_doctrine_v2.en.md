@@ -125,11 +125,11 @@ We are not. Attachment to land, memories, culture, and human relationships is di
 
 ## The First Three Experiments
 
-1. **Universal Citizen Declaration v1**: Draft a short declaration with no legal effect and a voluntary, non-exclusive, revocable participation agreement.
+1. **Universal Citizen Declaration v1**: Draft a short declaration separating birthplace from spiritual belonging, with a voluntary, non-exclusive, revocable participation agreement.
 2. **Universal Law Repository v1**: Manage the first ten articles with Issues, change proposals, evidence, and deadlines.
 3. **Prototyping Universal Qualifications**: Issue small proofs of capability, such as "Completed one policy evaluation article," complete with outcome URLs and third-party signatures.
 
-We are not starting with currency. Bitcoin and Lightning are already operational; the unique value of the Universal Government lies in the design of philosophy, norms, evaluation, and trust.
+Alongside currency (the initial grant of UNI and interoperability with Bitcoin/Lightning), the unique value of the Universal Government lies in the integrated design of philosophy, norms, evaluation, and trust.
 
 ## Technical References
 

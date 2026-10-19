@@ -1,8 +1,8 @@
-# Dismantling the Cosmic Government Ourselves: Six Vulnerabilities and Design-Level Responses
+# Dismantling the Cosmic Government Ourselves: Eleven Vulnerabilities and Design-Level Responses
 
 The Cosmic Government values "verifiability" and "exitability." If so, the very first entity that must face the scalpel of verification is none other than the Cosmic Government itself.
 
-In this manifesto, we dare to list six fundamental criticisms that can be leveled at the current vision of the Cosmic Government, and present how we respond to each at the concrete level of "design." For those issues lacking a definitive answer, we honestly mark them as "unresolved."
+In this manifesto, we dare to list eleven fundamental criticisms that can be leveled at the current vision of the Cosmic Government, and present how we respond to each at the concrete level of "design." For those issues lacking a definitive answer, we honestly mark them as "unresolved."
 
 ---
 
@@ -12,22 +12,22 @@ The fifth of our Seven Principles states: "Publish the purpose, costs, effects, 
 
 This is an entirely legitimate point. So, let us first create a concrete example.
 
-### Policy Evaluation Card: Type B Continued Employment Support Remuneration Revision (FY2024)
+### Policy Evaluation Card: Standardization & Procurement of Local Government Core IT Systems (FY2025)
 
-Type B Continued Employment Support is a welfare service where individuals with disabilities receive vocational training without an employment contract. The FY2024 remuneration revision radically shifted the basic remuneration received by facilities to a score system linked to "average wages."
+In the nationwide push to standardize local government core IT systems, massive public expenditures are committed, yet escalating transition costs, vendor lock-in, and actual front-line operational efficiency remain insufficiently audited.
 
 | Evaluation Item | Details |
 |----------|------|
-| **Purpose** | To incentivize facilities to increase wages and boost the income of users. |
-| **Cost** | The total benefit cost for disability welfare services is approximately 4.7 trillion yen annually (FY2024 budget basis). There are about 14,000 Type B facilities nationwide, with roughly 300,000 users. |
-| **Effectiveness Metric** | Whether the average monthly wage (FY2022 actual: approx. 17,031 yen) increased after the revision. |
-| **Alternatives** | (a) Provide money directly to users and let them choose their preferred facility.<br>(b) Establish a minimum wage standard.<br>(c) Introduce third-party evaluations linked to outcomes. |
-| **Known Risks** | If the link to wages becomes too strong, there is a risk of "cream skimming" (cherry-picking), where facilities avoid accepting individuals with severe disabilities. |
-| **Abolition Conditions** | If, three years after the revision, average wages have not risen and the utilization rate by individuals with severe disabilities has dropped. |
+| **Purpose** | To achieve long-term operating cost reductions and rapid public service updates via a standardized platform across all municipalities. |
+| **Cost** | Subsidies and municipal expenditures totaling hundreds of billions of yen (covering 1,741 municipalities nationwide). |
+| **Effectiveness Metric** | Operating & maintenance cost reduction rate after transition (Target: 30% reduction vs. baseline) and system update lead times. |
+| **Alternatives** | (a) Phased open protocol integration via APIs rather than monolithic migration.<br>(b) Adopting open-source software (OSS) with community maintenance.<br>(c) Performance-based SaaS contracting models. |
+| **Known Risks** | Continued dependence on legacy vendor cartels, leading to soaring customization expenses and front-line workflow friction. |
+| **Abolition Conditions** | If, three years post-migration, operational cost savings fail to materialize and subsequent modification costs exceed pre-transition levels. |
 
-Anyone can verify whether the contents of this table are correct by looking at the data published by the Ministry of Health, Labour and Welfare. Conversely, vague claims that no one can verify do not even belong on the discussion table. The Cosmic Government believes that applying this format to actual policies is the very first step toward true "verifiability."
+Anyone can verify whether the contents of this table are correct by looking at public administrative review sheets and local procurement contracts. Conversely, vague claims that no one can verify do not even belong on the discussion table. The Cosmic Government believes that applying this format to actual policies is the very first step toward true "verifiability."
 
-Next Move: The first mission of the "Agency to Smash the Welfare Village" is to create ten policy evaluation cards like this one, clearly stating the data sources and update dates, and make them public.
+Next Move: The first mission of the Cosmic Government is to create ten policy evaluation cards like this one, clearly stating the data sources and update dates, and make them public.
 
 ---
 
@@ -254,9 +254,42 @@ Critics point out: "Multi-sig and public logs are merely technical tools. Who se
 
 ---
 
+## 11. "There is no better alternative than electoral democracy": Responding with Decision Unbundling and Exit
+
+The most ubiquitous defense of the status quo is Churchill's famous aphorism: "Democracy is the worst form of government, except for all those other forms that have been tried from time to time." Critics argue that despite its flaws, no viable alternative exists.
+
+### Cosmic Government Response: Unbundling Decisions and Enabling Exit, Not Abolishing Democracy
+
+We do not propose blindly abolishing elections overnight to leap into an untested utopia. Our response rests on three precise design principles:
+
+#### 1. Narrowing the Scope of Elections
+We do not demand the total eradication of voting. Rather, our proposal is: **"Narrow the scope of matters decided by broad elections, and equip everything else with empirical verification and the right to switch (Exit)."**  
+Even if electoral democracy is "better than the alternatives," that provides zero justification for leaving a crude, monolithic input mechanism stripped of exit rights and verifiable feedback loops. "Better than the alternatives" is not an excuse to halt structural improvement.
+
+#### 2. Separating "Fact Estimation" from "Value Judgment"
+Nuclear energy policy illustrates the structural defect of current elections:
+- **Fact Estimation (accident probabilities, waste disposal costs, levelized energy costs)**: These cannot be determined by popularity contests or legislative seat counts. They must be estimated by experts, paired with counter-hypotheses, and continually updated against empirical data.
+- **Value Judgment (risk tolerance, spatial distribution of burdens)**: This cannot be delegated to an unelected technocracy; it belongs to affected stakeholders and ethics.
+
+The current electoral system bundles these fundamentally different domains into a single vote cast once every few years. As a result, non-expert politicians act on broad blank checks from non-expert voters, creating a double failure.
+
+| Unbundled Question | Cosmic Government Approach |
+|---|---|
+| **Fact & Cost Estimation** | Disclose expert estimates alongside dissenting models; verify with data (never decided by vote). |
+| **Risk Tolerance & Burden** | Weight the voice and consent of directly affected stakeholders (e.g., host communities). |
+| **Macro Strategy & Priorities** | Deliberate via stratified random citizen assemblies (sortition) based on public facts. |
+
+**"Fact estimation cannot be decided by a vote, and value judgments cannot be monopolized by technocrats. Forcing both into a single ballot is the original design flaw."**
+
+#### 3. The Freedom to Fork (Exit) as the Ultimate Discipline
+In open-source software (like Linux), governance often resembles a "benevolent dictatorship." Yet it rarely becomes extractive. Why? Because **anyone has the absolute freedom to fork the codebase and walk away (Exit).**  
+Rather than being trapped in a false dichotomy of "autocracy vs. 51% majority rule," **a framework that tests small, verifies empirically, and allows modular switching (Exit)** provides the most robust discipline against tyranny.
+
+---
+
 ## Verification of This Very Manifesto
 
-Now, let us self-evaluate how well this manifesto itself has answered the ten weaknesses raised:
+Now, let us self-evaluate how well this manifesto itself has answered the eleven weaknesses raised:
 
 - Zero verifiable data → Created one actual example of a policy evaluation card.
 - Exit is a privilege of the rich → Presented three concrete design principles.
@@ -268,6 +301,7 @@ Now, let us self-evaluate how well this manifesto itself has answered the ten we
 - Early registration vs. philosophy → Rejected purism, committing to phased adoption with guaranteed instant EXIT.
 - Data export vs. deletion contradiction → Defined a two-stage export-then-purge workflow.
 - AI bias and false positives → Mandated Human-in-the-Loop and provisional appeal suspensions.
+- No better alternative than elections → Proposed 3-way decision unbundling (facts, stakeholders, sortition) and Exit discipline instead of crude abolition.
 
 However, we do not arrogantly claim to have "flawlessly refuted" everything. The policy evaluation card is still expanding its database, and exit and remedy protocols must be continuously battle-tested in living code and community practice.
 

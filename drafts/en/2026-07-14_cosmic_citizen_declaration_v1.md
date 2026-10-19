@@ -19,7 +19,6 @@ Therefore, distinct from my residence or legal nationality, I declare my spiritu
 
 ## Nature of the Declaration
 
-- This declaration has no legal effect.
 - The declaration is voluntary and compatible with other cultural and spiritual affiliations.
 - The declarant may withdraw it at any time without providing a reason.
 - Public disclosure of name, address, or contact information is not a condition for participation.

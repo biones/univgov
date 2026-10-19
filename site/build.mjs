@@ -1,7 +1,7 @@
 import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import QRCode from "qrcode";
-import { articles, site, i18n } from "./site.config.mjs";
+import { articles, site, i18n, spaceLawChapters, aiGovernancePrompts } from "./site.config.mjs";
 import { generateAllAiMarkdown } from "../scripts/generate_univgov_complete_md.mjs";
 
 const root = resolve(import.meta.dirname, "..");
@@ -139,15 +139,16 @@ const nav = (active = "", locale) => `
     </a>
     <nav aria-label="Navigation">
       <a href="${getPrefix(locale.lang)}/">${locale.nav.home}</a>
+      <a ${active === "guide" ? 'aria-current="page"' : ""} href="${getPrefix(locale.lang)}/articles/easy-guide" style="color: #fbbf24; font-weight: 700;">📖 ${locale.nav.guide}</a>
       <a ${active === "articles" ? 'aria-current="page"' : ""} href="${getPrefix(locale.lang)}/#articles">${locale.nav.articles}</a>
       <a href="${getPrefix(locale.lang)}/#rules">${locale.nav.rules}</a>
-      <a href="${getPrefix(locale.lang)}/articles/minimal-space-law-code">${locale.nav.spaceLaw}</a>
+      <a href="${getPrefix(locale.lang)}/#laws">${locale.nav.spaceLaw}</a>
       <a href="${site.githubUrl}" target="_blank" rel="noopener noreferrer" style="color: #a78bfa; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;">
         <svg height="15" width="15" viewBox="0 0 16 16" fill="currentColor" style="vertical-align: text-bottom;"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
         ${locale.nav.github} ↗
       </a>
-      <a href="https://discord.gg/HwqkcrMUG9" target="_blank" rel="noopener noreferrer" style="color: #818cf8; font-weight: 600;">${locale.nav.parliament} ↗</a>
-      <a ${active === "portal" ? 'aria-current="page"' : ""} href="${getPrefix(locale.lang)}/portal" class="nav-portal-btn" data-nav-portal style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; font-weight: 700; border-radius: 6px; padding: 6px 12px;">🔑 ${locale.lang === "en" ? "Sign In / Portal" : "ログイン / マイポータル"}</a>
+      <a href="${site.discordUrl}" target="_blank" rel="noopener noreferrer" style="color: #818cf8; font-weight: 600;">${locale.nav.parliament} ↗</a>
+      <a ${active === "portal" ? 'aria-current="page"' : ""} href="${getPrefix(locale.lang)}/portal" class="nav-portal-btn" data-nav-portal style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; font-weight: 700; border-radius: 6px; padding: 6px 12px;">🪐 ${locale.lang === "en" ? "Register / Portal (10⁶ UNI)" : "市民登録 / マイポータル (100万UNI)"}</a>
       <button class="search-trigger" type="button" data-search-open aria-label="${locale.nav.search}">${locale.nav.search}</button>
       <a href="${locale.ui.langLink}" class="lang-switcher">${locale.ui.langSwitcher}</a>
     </nav>
@@ -170,6 +171,17 @@ const shell = ({
   const altLocale = i18n[altLang];
   const prefix = getPrefix(locale.lang);
   const defaultOgImage = ogImage || `${site.baseUrl}${site.ogImageDefault}`;
+
+  const gaScript = site.googleAnalyticsId
+    ? `<!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=${escapeHtml(site.googleAnalyticsId)}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '${escapeHtml(site.googleAnalyticsId)}');
+  </script>`
+    : "";
 
   const analyticsScript = site.cloudflareAnalyticsToken
     ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${site.cloudflareAnalyticsToken}"}'></script>`
@@ -206,7 +218,7 @@ const shell = ({
   <meta name="keywords" content="${escapeHtml(locale.keywords)}">
   <meta name="author" content="${escapeHtml(site.author)}">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  ${canonical ? `<link rel="canonical" href="${canonical}">` : ""}
+  ${site.googleSiteVerification ? `<meta name="google-site-verification" content="${escapeHtml(site.googleSiteVerification)}">\n  ` : ""}${canonical ? `<link rel="canonical" href="${canonical}">` : ""}
   ${jaCanonical ? `<link rel="alternate" hreflang="ja" href="${jaCanonical}">` : ""}
   ${enCanonical ? `<link rel="alternate" hreflang="en" href="${enCanonical}">` : ""}
   ${jaCanonical ? `<link rel="alternate" hreflang="x-default" href="${jaCanonical}">` : ""}
@@ -229,6 +241,7 @@ const shell = ({
   <link rel="stylesheet" href="/assets/styles.css">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <script src="/assets/site.js" defer></script>
+  ${gaScript}
   ${jsonLdScript}
   ${analyticsScript}
   ${utmTrackerScript}
@@ -294,6 +307,366 @@ const card = (article, rendered, locale) => {
     <div class="card-foot"><span>${readStr}</span><a aria-label="Read ${escapeHtml(rendered.title)}" href="${prefix}/articles/${article.slug}">${locale.ui.read}</a></div>
   </article>`;
 };
+
+function renderSpaceLawSection(locale) {
+  const isEn = locale.lang === "en";
+  const prefix = getPrefix(locale.lang);
+
+  const chaptersHtml = spaceLawChapters.map((ch) => {
+    const chTitle = isEn ? ch.titleEn : ch.title;
+    const chDesc = isEn ? ch.descEn : ch.desc;
+
+    const articlesHtml = ch.articles.map((art) => {
+      const artNum = isEn ? art.numEn : art.num;
+      const artTitle = isEn ? art.titleEn : art.title;
+      const artSummary = isEn ? art.summaryEn : art.summary;
+      const artRoots = isEn ? art.rootsEn : art.roots;
+      const artSunset = isEn ? art.sunsetEn : art.sunset;
+      const ghUrl = `${site.githubUrl}/blob/main/laws/${art.path}`;
+
+      return `
+        <div class="law-card">
+          <div class="law-card-header">
+            <span class="law-num">${artNum}</span>
+            <span class="law-sunset" title="${isEn ? 'Sunset self-expiration period' : '義務的サンセット失効期日'}">⏱️ ${artSunset}</span>
+          </div>
+          <h4 class="law-title">${escapeHtml(artTitle)}</h4>
+          <p class="law-summary">${escapeHtml(artSummary)}</p>
+          <div class="law-roots">
+            <span>📚 ${isEn ? "Roots: " : "思想的背景: "}</span><strong>${escapeHtml(artRoots)}</strong>
+          </div>
+          <div class="law-actions">
+            <a href="${prefix}/articles/minimal-space-law-code" class="law-read-link">
+              ${locale.ui.spaceLawViewArticle}
+            </a>
+            <a href="${ghUrl}" target="_blank" rel="noopener noreferrer" class="law-gh-link">
+              <svg height="12" width="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+              <span>PR / Edit</span>
+            </a>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    return `
+      <div class="law-chapter-block">
+        <div class="law-chapter-head">
+          <span class="law-chapter-badge">BOOK ${ch.num}</span>
+          <h3>${escapeHtml(chTitle)}</h3>
+          <p>${escapeHtml(chDesc)}</p>
+        </div>
+        <div class="law-cards-grid">
+          ${articlesHtml}
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  return `
+    <section class="space-law-section" id="laws" aria-labelledby="laws-title">
+      <div class="section-head">
+        <div>
+          <span>06 / SPACE LAW CODE</span>
+          <h2 id="laws-title">${locale.ui.spaceLawTitle}</h2>
+        </div>
+        <p>${locale.ui.spaceLawSub}</p>
+      </div>
+
+      <div class="space-law-container">
+        ${chaptersHtml}
+      </div>
+
+      <div class="space-law-footer-cta">
+        <a href="${prefix}/articles/minimal-space-law-code" class="button primary">
+          📖 ${isEn ? "Read Full 20-Article Code Text" : "最小限必要法典の解説・全文を読む"}
+        </a>
+        <a href="${site.githubUrl}/tree/main/laws" target="_blank" rel="noopener noreferrer" class="button ghost">
+          <svg height="15" width="15" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+          <span>${isEn ? "Open laws/ Repository on GitHub" : "GitHubの条文ディレクトリを開く"} ↗</span>
+        </a>
+      </div>
+    </section>
+  `;
+}
+
+function renderAiToolkitSection(locale) {
+  const isEn = locale.lang === "en";
+  const prefix = getPrefix(locale.lang);
+  const contextUrl = `${site.baseUrl}/univgov_all.md`;
+
+  const cardsHtml = aiGovernancePrompts.map((p) => {
+    const title = isEn ? p.titleEn : p.title;
+    const badge = isEn ? p.badgeEn : p.badge;
+    const desc = isEn ? p.descEn : p.desc;
+
+    return `
+      <div class="ai-prompt-card">
+        <div class="ai-prompt-head">
+          <span class="ai-prompt-badge">${badge}</span>
+          <h4>${escapeHtml(title)}</h4>
+          <p>${escapeHtml(desc)}</p>
+        </div>
+        <div class="ai-prompt-box">
+          <pre><code>${escapeHtml(p.prompt)}</code></pre>
+        </div>
+        <div class="ai-prompt-foot">
+          <button type="button" class="button primary small btn-copy-prompt" data-prompt-text="${escapeHtml(p.prompt)}">
+            📋 <span>${locale.ui.aiPromptCopy}</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  return `
+    <section class="ai-toolkit-section" id="ai-toolkit" aria-labelledby="ai-toolkit-title">
+      <div class="section-head">
+        <div>
+          <span>11 / AI GOVERNANCE TOOLKIT</span>
+          <h2 id="ai-toolkit-title">${locale.ui.aiToolkitTitle}</h2>
+        </div>
+        <p>${locale.ui.aiToolkitSub}</p>
+      </div>
+
+      <div class="ai-context-banner">
+        <div class="ai-context-info">
+          <span class="ai-context-tag">🤖 LLM CONTEXT LAYER</span>
+          <h3>${isEn ? "One-Shot Knowledge Context for Gemini & AI Agents" : "Gemini / AIエージェント向け 1発投入コンテキスト"}</h3>
+          <p>${isEn ? "Feed the complete UNIVGOV doctrine, 20-article code, and economic protocols in a single Markdown file." : "全20条の宇宙法典、経済プロトコル、思想録の全文が1ファイルに統合されたAI用Markdownです。GeminiやClaude等にそのまま読み込ませて対話できます。"}</p>
+        </div>
+        <div class="ai-context-actions">
+          <button type="button" class="button primary small" id="btn-copy-context-url" data-context-url="${contextUrl}">
+            🔗 <span>${locale.ui.aiContextCopy}</span>
+          </button>
+          <a href="${prefix === "" ? "/univgov_all.md" : "/univgov_all.en.md"}" target="_blank" class="button ghost small">
+            📄 univgov_all.md ↗
+          </a>
+        </div>
+      </div>
+
+      <div class="ai-prompts-grid">
+        ${cardsHtml}
+      </div>
+    </section>
+  `;
+}
+
+function renderExplainerSection(locale) {
+  const ui = locale.ui;
+  const prefix = getPrefix(locale.lang);
+  const chaptersHtml = (ui.chapters || []).map((ch, idx) => `
+    <details class="chapter-card" ${idx === 0 ? "open" : ""}>
+      <summary class="chapter-summary">
+        <span class="chapter-num">${ch.num}</span>
+        <span class="chapter-title">${escapeHtml(ch.title)}</span>
+        <span class="chapter-toggle" aria-hidden="true">▾</span>
+      </summary>
+      <div class="chapter-body">
+        <p>${escapeHtml(ch.summary)}</p>
+      </div>
+    </details>
+  `).join("");
+
+  return `
+    <!-- Plain-language Explainer Section -->
+    <section class="explainer-section easy-section" id="about-univgov">
+      <div class="explainer-container">
+        <div class="section-head" style="margin-bottom: 24px;">
+          <div>
+            <span style="color: #38bdf8;">${locale.lang === "en" ? "01 / WHAT IS THIS?" : "01 / これはなに？"}</span>
+            <h2>${ui.explainTitle}</h2>
+          </div>
+          <p>${ui.explainSub}</p>
+        </div>
+
+        <div class="easy-oneliner">
+          <span class="easy-oneliner-label">${locale.lang === "en" ? "In one sentence" : "ひとことで言うと"}</span>
+          <p>${ui.explainOneLiner}</p>
+        </div>
+        <div class="easy-intro">
+          <p>${ui.explainIntro1}</p>
+          <p>${ui.explainIntro2}</p>
+        </div>
+
+        <!-- Heroic Guide Banner Card -->
+        <div class="guide-banner-card">
+          <div class="guide-banner-badge">${ui.guideBannerBadge}</div>
+          <div class="guide-banner-content">
+            <h3>${ui.guideBannerTitle}</h3>
+            <p class="guide-banner-sub">${ui.guideBannerSub}</p>
+            <p class="guide-banner-desc">${ui.guideBannerDesc}</p>
+            <a href="${prefix}/articles/easy-guide" class="button primary guide-banner-btn">
+              <span>${ui.guideBannerBtn}</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="explainer-grid">
+          <!-- Legacy State Card -->
+          <div class="explainer-card legacy">
+            <span class="explainer-badge">🏛️ ${ui.explainLegacyTag}</span>
+            <h3>${ui.explainLegacyTitle}</h3>
+            <ul class="explainer-list">
+              <li>
+                <span class="icon">🔒</span>
+                <span>${ui.explainLegacy1}</span>
+              </li>
+              <li>
+                <span class="icon">❌</span>
+                <span>${ui.explainLegacy2}</span>
+              </li>
+              <li>
+                <span class="icon">🚪</span>
+                <span>${ui.explainLegacy3}</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Univgov Modular Card -->
+          <div class="explainer-card univgov">
+            <span class="explainer-badge">🪐 ${ui.explainUnivgovTag}</span>
+            <h3>${ui.explainUnivgovTitle}</h3>
+            <ul class="explainer-list">
+              <li>
+                <span class="icon">✅</span>
+                <span>${ui.explainUnivgov1}</span>
+              </li>
+              <li>
+                <span class="icon">🔁</span>
+                <span>${ui.explainUnivgov2}</span>
+              </li>
+              <li>
+                <span class="icon">🚪</span>
+                <span>${ui.explainUnivgov3}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 5 Chapters Highlight Accordion -->
+        <div class="chapters-wrap">
+          <div class="chapters-head">
+            <h3>${ui.chaptersTitle}</h3>
+            <p>${ui.chaptersSub}</p>
+          </div>
+          <div class="chapters-list">
+            ${chaptersHtml}
+          </div>
+        </div>
+
+        <div class="easy-guide-link-wrap">
+          <a class="easy-guide-link" href="${prefix}/articles/easy-guide">${ui.explainGuideLink}</a>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderStepsSection(locale, prefix) {
+  const ui = locale.ui;
+  return `
+    <!-- 3 Actionable Steps Section -->
+    <section class="steps-section easy-section" id="how-to-start">
+      <div class="steps-container">
+        <div class="section-head" style="margin-bottom: 20px;">
+          <div>
+            <span style="color: #38bdf8;">${locale.lang === "en" ? "02 / WHERE TO START" : "02 / はじめかた"}</span>
+            <h2>${ui.stepsTitle}</h2>
+          </div>
+          <p>${ui.stepsSub}</p>
+        </div>
+
+        <div class="steps-grid">
+          <!-- Step 1 -->
+          <div class="step-card">
+            <div class="step-header">
+              <span class="step-num">${ui.step1Num}</span>
+              <span class="step-tag">${ui.step1Tag}</span>
+            </div>
+            <h3>${ui.step1Title}</h3>
+            <p>${ui.step1Desc}</p>
+            <a href="${prefix}/articles/easy-guide" class="step-link">${ui.step1Link}</a>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-card" style="border-color: rgba(56, 189, 248, 0.4); background: linear-gradient(145deg, rgba(56, 189, 248, 0.08) 0%, rgba(15, 23, 42, 0.8) 100%);">
+            <div class="step-header">
+              <span class="step-num">${ui.step2Num}</span>
+              <span class="step-tag" style="background: #0284c7; color: #fff; border-color: #38bdf8;">${ui.step2Tag}</span>
+            </div>
+            <h3>${ui.step2Title}</h3>
+            <p>${ui.step2Desc}</p>
+            <a href="#register" class="step-link" style="color: #38bdf8; font-weight: 700;">${ui.step2Link}</a>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step-card">
+            <div class="step-header">
+              <span class="step-num">${ui.step3Num}</span>
+              <span class="step-tag">${ui.step3Tag}</span>
+            </div>
+            <h3>${ui.step3Title}</h3>
+            <p>${ui.step3Desc}</p>
+            <a href="${site.discordUrl}" target="_blank" rel="noopener noreferrer" class="step-link">${ui.step3Link}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderFaqSection(locale) {
+  const ui = locale.ui;
+  const items = [
+    ["🛡️", ui.faq1Q, ui.faq1A],
+    ["💴", ui.faq2Q, ui.faq2A],
+    ["⚖️", ui.faq3Q, ui.faq3A],
+    ["🧾", ui.faq4Q, ui.faq4A],
+    ["🪙", ui.faq5Q, ui.faq5A],
+  ].filter(([, q]) => q);
+  return `
+    <!-- FAQ & Misconceptions Section -->
+    <section class="faq-section easy-section" id="faq">
+      <div class="faq-container">
+        <div class="section-head" style="margin-bottom: 20px;">
+          <div>
+            <span style="color: #38bdf8;">${locale.lang === "en" ? "03 / COMMON WORRIES" : "03 / よくある心配ごと"}</span>
+            <h2>${ui.faqSectionTitle}</h2>
+          </div>
+          <p>${ui.faqSectionSub}</p>
+        </div>
+
+        <div class="faq-grid">
+          ${items.map(([icon, q, a]) => `
+          <div class="faq-card">
+            <h3><span>${icon}</span> <span>${q}</span></h3>
+            <p>${a}</p>
+          </div>`).join("")}
+        </div>
+      </div>
+    </section>
+  `;
+}
+
+function renderGlossarySection(locale) {
+  const ui = locale.ui;
+  if (!ui.glossary?.length) return "";
+  return `
+    <!-- Glossary Section -->
+    <section class="glossary-section easy-section" id="glossary">
+      <div class="section-head" style="margin-bottom: 20px;">
+        <div>
+          <span style="color: #38bdf8;">${locale.lang === "en" ? "04 / GLOSSARY" : "04 / 言葉の意味"}</span>
+          <h2>${ui.glossaryTitle}</h2>
+        </div>
+        <p>${ui.glossarySub}</p>
+      </div>
+      <dl class="glossary-list">
+        ${ui.glossary.map(([term, desc]) => `<div><dt>${escapeHtml(term)}</dt><dd>${escapeHtml(desc)}</dd></div>`).join("")}
+      </dl>
+    </section>
+  `;
+}
 
 function homepage(renderedArticles, locale) {
   const prefix = getPrefix(locale.lang);
@@ -370,90 +743,26 @@ function homepage(renderedArticles, locale) {
           <p class="lead">${locale.ui.heroLead1}</p>
           <p class="lead">${locale.ui.heroLead2}</p>
           <div class="hero-actions">
-            <a class="button primary" href="#rules">${locale.ui.readPrinciples}</a>
-            <a class="button ghost" href="#articles">${locale.ui.readArticles}</a>
+            <a class="button hero-register-btn" href="#register" style="background: #0284c7; border-color: #38bdf8; color: #fff; box-shadow: 0 0 16px rgba(56, 189, 248, 0.35); font-weight: 700;">${locale.ui.heroRegisterBtn}</a>
+            <a class="button primary" href="${prefix}/articles/easy-guide" style="background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; color: #38bdf8; font-weight: 700;">${locale.lang === "en" ? "📖 Complete Guide (approx. 8 min)" : "📖 3分で完全にわかる宇宙政府のすべて"}</a>
+            <a class="button ghost" href="#deep-dive" onclick="document.getElementById('deep-dive').open=true;">${locale.ui.readPrinciples}</a>
+            <a class="button ghost" href="#articles" onclick="document.getElementById('deep-dive').open=true;">${locale.ui.readArticles}</a>
           </div>
         </div>
       </section>
 
-      <!-- 3 Pathways Section -->
-      <section class="pathways-section" style="margin: 40px auto; max-width: 1120px; padding: 0 20px;">
-        <div class="section-head">
-          <div>
-            <span>00 / PATHWAYS</span>
-            <h2>${locale.lang === "en" ? "Where to Begin: 3 Entry Points" : "あなたに合った最初の入り口"}</h2>
-          </div>
-          <p>${locale.lang === "en" ? "Choose the pathway that matches your perspective to explore Univgov." : "立場や関心に合わせて、宇宙政府の思想と道具にアクセスできます。"}</p>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 24px;">
-          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
-            <div style="font-size: 1.8rem; margin-bottom: 12px;">🌱</div>
-            <h3 style="font-size: 1.15rem; margin-bottom: 8px; color: #38bdf8;">${locale.lang === "en" ? "For General Citizens" : "一般市民・生活者向け"}</h3>
-            <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6; margin-bottom: 16px;">
-              ${locale.lang === "en" ? "Why is your physical address tied to all administrative services? Discover how to unbundle your life from state monopoly." : "なぜ住む場所と行政サービスが一体なのか？国家の抱き合わせを解体し、生活防衛と帰属選択を始める基礎論。"}
-            </p>
-            <a href="${prefix}/articles/address-is-not-allegiance" style="color: #38bdf8; font-size: 0.88rem; font-weight: 600; text-decoration: none;">${locale.lang === "en" ? "Read 'Address is Not Allegiance' →" : "『住所と所属を切り分ける』を読む →"}</a>
-          </div>
-          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
-            <div style="font-size: 1.8rem; margin-bottom: 12px;">📊</div>
-            <h3 style="font-size: 1.15rem; margin-bottom: 8px; color: #f59e0b;">${locale.lang === "en" ? "For Policy & Field Stakeholders" : "政策・福祉・現場当事者向け"}</h3>
-            <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6; margin-bottom: 16px;">
-              ${locale.lang === "en" ? "Real-world policy evaluation cards (e.g. Welfare B-type reforms, school lunches) using open data and empirical cost-benefit metrics." : "就労継続支援B型や給食予算など、現場の制度疲労と公金配分を『政策評価カード』でデータ検証するパイロット事例。"}
-            </p>
-            <a href="${prefix}/articles/stress-test" style="color: #f59e0b; font-size: 0.88rem; font-weight: 600; text-decoration: none;">${locale.lang === "en" ? "View Policy Evaluation Card →" : "政策評価カードの実例を見る →"}</a>
-          </div>
-          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
-            <div style="font-size: 1.8rem; margin-bottom: 12px;">⚖️</div>
-            <h3 style="font-size: 1.15rem; margin-bottom: 8px; color: #a78bfa;">${locale.lang === "en" ? "Space Law & Git Governance" : "宇宙法典 ＆ Gitガバナンス"}</h3>
-            <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6; margin-bottom: 16px;">
-              ${locale.lang === "en" ? "20 modular articles, anti-election merge protocol (SLMP-1), and open-source legislation via GitHub PRs." : "選挙・国家司法を排した全20条のモジュール法典。GitHub上で特定の条文に直接突っ込み・PR・Forkできるオープン立法プロトコル。"}
-            </p>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <a href="${site.githubUrl}/tree/main/laws" target="_blank" rel="noopener noreferrer" style="color: #a78bfa; font-size: 0.88rem; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
-                <svg height="14" width="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
-                ${locale.lang === "en" ? "GitHub Law Repository (All 20 Articles) →" : "GitHub 宇宙法典リポジトリ（全20条） →"}
-              </a>
-              <a href="${prefix}/articles/minimal-space-law-code" style="color: #cbd5e1; font-size: 0.82rem; text-decoration: none;">
-                ${locale.lang === "en" ? "Read Minimal Space Law Code (Web) →" : "Web版 最小法典解説を読む →"}
-              </a>
-            </div>
-          </div>
-          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
-            <div style="font-size: 1.8rem; margin-bottom: 12px;">⚙️</div>
-            <h3 style="font-size: 1.15rem; margin-bottom: 8px; color: #38bdf8;">${locale.lang === "en" ? "For Engineers & AI Agents" : "技術者・AIエージェント向け"}</h3>
-            <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6; margin-bottom: 16px;">
-              ${locale.lang === "en" ? "ZK-KYC, DIDs, multi-sig governance, and single-file complete Markdown for LLM analysis." : "ゼロ知識証明、DID、マルチシグ統治、およびAIが1発で全思想を読み込める統合Markdown（univgov_all.md / llms.txt）。"}
-            </p>
-            <a href="${prefix === "" ? "/univgov_all.md" : "/univgov_all.en.md"}" target="_blank" style="color: #38bdf8; font-size: 0.88rem; font-weight: 600; text-decoration: none;">${locale.lang === "en" ? "Access Full Markdown for AI →" : "AI向け完全統合Markdownを開く →"}</a>
-          </div>
-        </div>
-      </section>
+      ${renderExplainerSection(locale)}
 
-      <section class="featured-section" aria-labelledby="featured-title">
-        <div class="section-head"><div><span>01 / FEATURED</span><h2 id="featured-title">${locale.ui.featuredTitle}</h2></div><p>${locale.ui.featuredSub}</p></div>
-        <div class="featured-grid">${featured}</div>
-      </section>
+      ${renderStepsSection(locale, prefix)}
 
-      <section class="manifesto-band">
-        <h2>${locale.ui.manifestoTitle}</h2>
-        <a href="${prefix}/articles/hundred-year-thesis">${locale.ui.readManifesto}</a>
-      </section>
+      ${renderFaqSection(locale)}
 
-      <section class="principles" id="rules" aria-labelledby="principles-title">
-        <div class="section-head"><div><span>02 / PRINCIPLES</span><h2 id="principles-title">${locale.ui.principlesTitle}</h2></div><p>${locale.ui.principlesSub}</p></div>
-        <ol class="principle-list">${locale.principles.map(([n, title, text]) => `<li><span>${n}</span><h3>${title}</h3><p>${text}</p></li>`).join("")}</ol>
-      </section>
-
-      <section class="archive" id="articles" aria-labelledby="archive-title">
-        <div class="section-head"><div><span>03 / ARCHIVE</span><h2 id="archive-title">${locale.ui.archiveTitle}</h2></div><div class="archive-tools"><label for="archive-search">${locale.ui.archiveFilter}</label><input id="archive-search" type="search" placeholder="${locale.ui.searchPlaceholder}" data-card-filter></div></div>
-        <div class="article-grid" data-card-grid>${allCards}</div>
-        <p class="empty-state" data-empty-state hidden>${locale.ui.notFound}</p>
-      </section>
+      ${renderGlossarySection(locale)}
 
       <section class="registration" id="register" aria-labelledby="register-title">
         <div class="section-head">
           <div>
-            <span>04 / REGISTRATION & LOGIN</span>
+            <span style="color: #38bdf8;">${locale.lang === "en" ? "05 / REGISTRATION & UNI GRANT" : "05 / 市民登録とUNI付与"}</span>
             <h2 id="register-title">${locale.ui.registerTitle}</h2>
           </div>
           <p>${locale.ui.registerDesc}</p>
@@ -509,125 +818,237 @@ function homepage(renderedArticles, locale) {
         </div>
       </section>
 
-      <section class="parliament-section" id="parliament" aria-labelledby="parliament-title">
-        <div class="section-head">
-          <div>
-            <span>05 / PARLIAMENT</span>
-            <h2 id="parliament-title">${locale.ui.parliamentTitle}</h2>
-          </div>
-          <p>${locale.ui.parliamentSub}</p>
-        </div>
+      <!-- Advanced Deep Dive Section (Collapsible) -->
+      <section class="deep-dive-band" id="deep-dive-section" aria-labelledby="deep-dive-title" style="margin: 60px auto; max-width: 1180px; padding: 0 20px;">
+        <details class="deep-dive-details" id="deep-dive">
+          <summary class="deep-dive-summary">
+            <div class="deep-dive-summary-head">
+              <span class="deep-dive-kicker">06 / DEEP DIVE</span>
+              <h2 id="deep-dive-title" style="margin: 8px 0; font-size: clamp(22px, 2.5vw, 32px); color: #f1f5f9;">${locale.ui.moreTitle}</h2>
+              <p style="margin: 0; color: #94a3b8; font-size: 14px; max-width: 760px;">${locale.ui.moreSub}</p>
+            </div>
+            <div class="deep-dive-toggle-badge">
+              <span>${locale.ui.moreOpen}</span>
+            </div>
+          </summary>
 
-        <div class="parliament-grid-box">
-          <!-- X Parliament Card -->
-          <div class="parliament-card x-platform">
-            <div class="parliament-card-header">
-              <span class="platform-icon">𝕏</span>
-              <div>
-                <h3>${locale.ui.parliamentXTitle}</h3>
-                <p>${locale.ui.parliamentXDesc}</p>
+          <div class="deep-dive-content" style="margin-top: 40px;">
+            <!-- Pathways Section -->
+            <section class="pathways-section" style="margin: 30px auto 50px;">
+              <div class="section-head">
+                <div>
+                  <span>PATHWAYS</span>
+                  <h2>${locale.lang === "en" ? "Where to Begin: 4 Entry Points" : "あなたに合った最初の入り口"}</h2>
+                </div>
+                <p>${locale.lang === "en" ? "Choose the pathway that matches your perspective to explore Univgov." : "立場や関心に合わせて、宇宙政府の思想と道具にアクセスできます。"}</p>
               </div>
-            </div>
-
-            <div class="hashtag-table">
-              <div class="hashtag-row">
-                <code>#UNIVGOV</code>
-                <span>${locale.lang === "en" ? "General discussions, questions, and citizen voices" : "総合議論・意見表明・宇宙国民としての発言"}</span>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 24px;">
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
+                  <div style="font-size: 1.8rem; margin-bottom: 12px;">🌱</div>
+                  <h3 style="font-size: 1.15rem; margin-bottom: 8px; color: #38bdf8;">${locale.lang === "en" ? "For General Citizens" : "一般市民・生活者向け"}</h3>
+                  <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6; margin-bottom: 16px;">
+                    ${locale.lang === "en" ? "Why is your physical address tied to all administrative services? Discover how to unbundle your life from state monopoly." : "なぜ住む場所と行政サービスが一体なのか？国家の抱き合わせを解体し、生活防衛と帰属選択を始める基礎論。"}
+                  </p>
+                  <a href="${prefix}/articles/address-is-not-allegiance" style="color: #38bdf8; font-size: 0.88rem; font-weight: 600; text-decoration: none;">${locale.lang === "en" ? "Read 'Address is Not Allegiance' →" : "『住所と所属を切り分ける』を読む →"}</a>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
+                  <div style="font-size: 1.8rem; margin-bottom: 12px;">📊</div>
+                  <h3 style="font-size: 1.15rem; margin-bottom: 8px; color: #f59e0b;">${locale.lang === "en" ? "For Policy & Governance Practitioners" : "政策・行政・実務者向け"}</h3>
+                  <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6; margin-bottom: 16px;">
+                    ${locale.lang === "en" ? "Real-world policy evaluation cards (e.g. municipal IT procurement, public subsidies) using open data and empirical cost-benefit metrics." : "自治体IT標準化や公金調達など、制度疲労と公金配分を『政策評価カード』でデータ検証するパイロット事例。"}
+                  </p>
+                  <a href="${prefix}/articles/stress-test" style="color: #f59e0b; font-size: 0.88rem; font-weight: 600; text-decoration: none;">${locale.lang === "en" ? "View Policy Evaluation Card →" : "政策評価カードの実例を見る →"}</a>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
+                  <div style="font-size: 1.8rem; margin-bottom: 12px;">⚖️</div>
+                  <h3 style="font-size: 1.15rem; margin-bottom: 8px; color: #a78bfa;">${locale.lang === "en" ? "Space Law & Git Governance" : "宇宙法典 ＆ Gitガバナンス"}</h3>
+                  <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6; margin-bottom: 16px;">
+                    ${locale.lang === "en" ? "20 modular articles, anti-election merge protocol (SLMP-1), and open-source legislation via GitHub PRs." : "選挙・国家司法を排した全20条のモジュール法典。GitHub上で特定の条文に直接突っ込み・PR・Forkできるオープン立法プロトコル。"}
+                  </p>
+                  <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <a href="#laws" style="color: #a78bfa; font-size: 0.88rem; font-weight: 700; text-decoration: none;">
+                      ${locale.lang === "en" ? "Explore 20-Article Code on Site ↓" : "宇宙法典 全20条ブラウザを見る ↓"}
+                    </a>
+                    <a href="${site.githubUrl}/tree/main/laws" target="_blank" rel="noopener noreferrer" style="color: #cbd5e1; font-size: 0.82rem; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                      <svg height="12" width="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                      <span>GitHub (laws/) ↗</span>
+                    </a>
+                  </div>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 24px;">
+                  <div style="font-size: 1.8rem; margin-bottom: 12px;">⚙️</div>
+                  <h3 style="font-size: 1.15rem; margin-bottom: 8px; color: #38bdf8;">${locale.lang === "en" ? "For Engineers & AI Agents" : "技術者・AIエージェント向け"}</h3>
+                  <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.6; margin-bottom: 16px;">
+                    ${locale.lang === "en" ? "ZK-KYC, DIDs, multi-sig governance, and single-file complete Markdown for LLM analysis." : "ゼロ知識証明、DID、マルチシグ統治、およびAIが1発で全思想を読み込める統合Markdown（univgov_all.md / llms.txt）。"}
+                  </p>
+                  <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <a href="#ai-toolkit" style="color: #38bdf8; font-size: 0.88rem; font-weight: 700; text-decoration: none;">
+                      ${locale.lang === "en" ? "AI Governance Prompt Kit ↓" : "AI政策監査プロンプトキット ↓"}
+                    </a>
+                    <a href="${prefix === "" ? "/univgov_all.md" : "/univgov_all.en.md"}" target="_blank" style="color: #cbd5e1; font-size: 0.82rem; text-decoration: none;">
+                      ${locale.lang === "en" ? "univgov_all.md (Full Context) ↗" : "univgov_all.md（全思想集成） ↗"}
+                    </a>
+                  </div>
+                </div>
               </div>
-              <div class="hashtag-row">
-                <code>#UNIVGOV_BILL</code>
-                <span>${locale.lang === "en" ? "Formal policy proposals, space law amendments" : "法案・政策の起草・改善提案（プレフィックス統一）"}</span>
+            </section>
+
+            <!-- Featured Section -->
+            <section class="featured-section" aria-labelledby="featured-title">
+              <div class="section-head"><div><span>FEATURED</span><h2 id="featured-title">${locale.ui.featuredTitle}</h2></div><p>${locale.ui.featuredSub}</p></div>
+              <div class="featured-grid">${featured}</div>
+            </section>
+
+            <!-- Manifesto Band -->
+            <section class="manifesto-band">
+              <h2>${locale.ui.manifestoTitle}</h2>
+              <a href="${prefix}/articles/hundred-year-thesis">${locale.ui.readManifesto}</a>
+            </section>
+
+            <!-- Principles -->
+            <section class="principles" id="rules" aria-labelledby="principles-title">
+              <div class="section-head"><div><span>PRINCIPLES</span><h2 id="principles-title">${locale.ui.principlesTitle}</h2></div><p>${locale.ui.principlesSub}</p></div>
+              <ol class="principle-list">${locale.principles.map(([n, title, text]) => `<li><span>${n}</span><h3>${title}</h3><p>${text}</p></li>`).join("")}</ol>
+            </section>
+
+            <!-- Space Law Section -->
+            ${renderSpaceLawSection(locale)}
+
+            <!-- Parliament Section -->
+            <section class="parliament-section" id="parliament" aria-labelledby="parliament-title">
+              <div class="section-head">
+                <div>
+                  <span>PARLIAMENT</span>
+                  <h2 id="parliament-title">${locale.ui.parliamentTitle}</h2>
+                </div>
+                <p>${locale.ui.parliamentSub}</p>
               </div>
-              <div class="hashtag-row">
-                <code>#UNIVGOV_VOTE</code>
-                <span>${locale.lang === "en" ? "Voting, referendum tallying, consensus checks" : "投票・賛否表明・国民投票の集計用"}</span>
+
+              <div class="parliament-grid-box">
+                <!-- X Parliament Card -->
+                <div class="parliament-card x-platform">
+                  <div class="parliament-card-header">
+                    <span class="platform-icon">𝕏</span>
+                    <div>
+                      <h3>${locale.ui.parliamentXTitle}</h3>
+                      <p>${locale.ui.parliamentXDesc}</p>
+                    </div>
+                  </div>
+
+                  <div class="hashtag-table">
+                    <div class="hashtag-row">
+                      <code>#UNIVGOV</code>
+                      <span>${locale.lang === "en" ? "General discussions, questions, and citizen voices" : "総合議論・意見表明・宇宙国民としての発言"}</span>
+                    </div>
+                    <div class="hashtag-row">
+                      <code>#UNIVGOV_BILL</code>
+                      <span>${locale.lang === "en" ? "Formal policy proposals, space law amendments" : "法案・政策の起草・改善提案（プレフィックス統一）"}</span>
+                    </div>
+                    <div class="hashtag-row">
+                      <code>#UNIVGOV_VOTE</code>
+                      <span>${locale.lang === "en" ? "Voting, referendum tallying, consensus checks" : "投票・賛否表明・国民投票の集計用"}</span>
+                    </div>
+                  </div>
+
+                  <div class="parliament-actions">
+                    <a href="https://x.com/intent/post?text=${encodeURIComponent('【宇宙政府 政策提案】\n\n#UNIVGOV_BILL #UNIVGOV\nhttps://univgov.pages.dev')}" target="_blank" rel="noopener noreferrer" class="button primary small">✍️ ${locale.ui.parliamentPostBill}</a>
+                    <a href="https://x.com/intent/post?text=${encodeURIComponent('【宇宙政府 議会発言】\n\n#UNIVGOV #宇宙政府\nhttps://univgov.pages.dev')}" target="_blank" rel="noopener noreferrer" class="button secondary small">💬 ${locale.ui.parliamentPostOpinion}</a>
+                    <a href="https://x.com/search?q=%23UNIVGOV&f=live" target="_blank" rel="noopener noreferrer" class="button ghost small">🔍 ${locale.ui.parliamentSearch}</a>
+                  </div>
+                </div>
+
+                <!-- Discord Parliament Card -->
+                <div class="parliament-card discord-platform">
+                  <div class="parliament-card-header">
+                    <span class="platform-icon">💬</span>
+                    <div>
+                      <h3>${locale.ui.parliamentXTitle ? (locale.lang === "en" ? "Discord Permanent Council & Workgroups" : "Discord 常任委員会・作業部会") : ""}</h3>
+                      <p>${locale.lang === "en" ? "Real-time discussions, modular development workgroups, and drafting chambers." : "リアルタイムの審議、法案の共同ドラフト作業、技術モジュールの開発ワーキンググループ。"}</p>
+                    </div>
+                  </div>
+
+                  <div class="discord-features">
+                    <ul>
+                      <li>🏛️ <strong>${locale.lang === "en" ? "General Assembly Chamber" : "宇宙議会 本会議場"}</strong>: ${locale.lang === "en" ? "Live open townhalls & hearings" : "公聴会・リアルタイム討議"}</li>
+                      <li>📜 <strong>${locale.lang === "en" ? "Law Drafting Room" : "法案起草・審査室"}</strong>: ${locale.lang === "en" ? "Collaborative policy writing" : "宇宙基本法・モジュール仕様の共同編集"}</li>
+                      <li>⚙️ <strong>${locale.lang === "en" ? "Developer Guild" : "技術実装ギルド"}</strong>: ${locale.lang === "en" ? "Identity, currency, and portal coding" : "ID・認証・ポータルシステムの開発"}</li>
+                    </ul>
+                  </div>
+
+                  <div class="parliament-actions">
+                    <a href="${site.discordUrl}" target="_blank" rel="noopener noreferrer" class="button" style="background: #5865F2; color: #fff; border: 1px solid #5865F2; font-weight: bold;">💬 ${locale.ui.joinParliament}</a>
+                  </div>
+                </div>
               </div>
-            </div>
+            </section>
 
-            <div class="parliament-actions">
-              <a href="https://x.com/intent/post?text=${encodeURIComponent('【宇宙政府 政策提案】\n\n#UNIVGOV_BILL #UNIVGOV\nhttps://univgov.pages.dev')}" target="_blank" rel="noopener noreferrer" class="button primary small">✍️ ${locale.ui.parliamentPostBill}</a>
-              <a href="https://x.com/intent/post?text=${encodeURIComponent('【宇宙政府 議会発言】\n\n#UNIVGOV #宇宙政府\nhttps://univgov.pages.dev')}" target="_blank" rel="noopener noreferrer" class="button secondary small">💬 ${locale.ui.parliamentPostOpinion}</a>
-              <a href="https://x.com/search?q=%23UNIVGOV&f=live" target="_blank" rel="noopener noreferrer" class="button ghost small">🔍 ${locale.ui.parliamentSearch}</a>
-            </div>
-          </div>
-
-          <!-- Discord Parliament Card -->
-          <div class="parliament-card discord-platform">
-            <div class="parliament-card-header">
-              <span class="platform-icon">💬</span>
-              <div>
-                <h3>${locale.lang === "en" ? "Discord Permanent Council & Workgroups" : "Discord 常任委員会・作業部会"}</h3>
-                <p>${locale.lang === "en" ? "Real-time discussions, modular development workgroups, and drafting chambers." : "リアルタイムの審議、法案の共同ドラフト作業、技術モジュールの開発ワーキンググループ。"}</p>
+            <!-- BTC Zone Section -->
+            <section class="btc-zone-section" id="btc-zone" aria-labelledby="btc-zone-title">
+              <div class="section-head">
+                <div>
+                  <span>CURRENCY & BTC ZONE</span>
+                  <h2 id="btc-zone-title">${locale.ui.btcZoneTitle}</h2>
+                </div>
+                <p>${locale.ui.btcZoneSub}</p>
               </div>
-            </div>
 
-            <div class="discord-features">
-              <ul>
-                <li>🏛️ <strong>${locale.lang === "en" ? "General Assembly Chamber" : "宇宙議会 本会議場"}</strong>: ${locale.lang === "en" ? "Live open townhalls & hearings" : "公聴会・リアルタイム討議"}</li>
-                <li>📜 <strong>${locale.lang === "en" ? "Law Drafting Room" : "法案起草・審査室"}</strong>: ${locale.lang === "en" ? "Collaborative policy writing" : "宇宙基本法・モジュール仕様の共同編集"}</li>
-                <li>⚙️ <strong>${locale.lang === "en" ? "Developer Guild" : "技術実装ギルド"}</strong>: ${locale.lang === "en" ? "Identity, currency, and portal coding" : "ID・認証・ポータルシステムの開発"}</li>
-              </ul>
-            </div>
+              <div class="btc-zone-grid">
+                <!-- Cosmic Currency UNI Protocol -->
+                <div class="btc-zone-card accent-uni" style="border-color: rgba(56, 189, 248, 0.35); background: linear-gradient(145deg, rgba(56, 189, 248, 0.08) 0%, rgba(15, 23, 42, 0.9) 100%);">
+                  <div class="zone-card-icon" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;">🪐</div>
+                  <h3 style="color: #38bdf8;">${locale.lang === "en" ? "0. Cosmic Currency UNI (10⁶ Fixed Grant)" : "0. 宇宙通貨 UNI（初期付与 10⁶ UNI・固定供給）"}</h3>
+                  <p>${locale.lang === "en" ? "Every registered citizen receives 1,000,000 UNI as an initial bootstrapping grant (fixed total supply, no arbitrary inflation). A non-state currency (~1 JPY scale) for instant P2P transfers & modular settlement." : "宇宙国民アカウントを開設した全市民に 1,000,000 UNI を初期交付（固定総供給・恣意的増刷なし）。国家のシニョリッジを排し、約1円スケール（変動相場）で市民間直接決済・価値交換を実現。"}</p>
+                  <a href="${prefix}/portal" class="button primary small" style="background: #0284c7; border-color: #38bdf8;">🪐 ${locale.lang === "en" ? "Open UNI Vault →" : "UNI ウォレットを開く →"}</a>
+                </div>
 
-            <div class="parliament-actions">
-              <a href="${site.discordUrl}" target="_blank" rel="noopener noreferrer" class="button" style="background: #5865F2; color: #fff; border: 1px solid #5865F2; font-weight: bold;">💬 ${locale.ui.joinParliament}</a>
-            </div>
+                <!-- Salary Protocol -->
+                <div class="btc-zone-card">
+                  <div class="zone-card-icon">💼</div>
+                  <h3>${locale.lang === "en" ? "1. BTC Salary & Freelance Revenue" : "1. 給料・売上のビットコイン受取"}</h3>
+                  <p>${locale.lang === "en" ? "Legally receive 10%-100% of your compensation in Bitcoin. Generate formal employer request forms instantly from My Portal." : "労働基準法に基づく合意書フォーマットを使い、給与や業務委託報酬をLightning/BTCで受け取る。マイポータルから公式申請書を1秒で出力可能。"}</p>
+                  <a href="${prefix}/portal" class="button primary small">📄 ${locale.lang === "en" ? "Generate Salary Form →" : "給与受取 申請書を出力 →"}</a>
+                </div>
+
+                <!-- Supermarket Protocol -->
+                <div class="btc-zone-card">
+                  <div class="zone-card-icon">🛒</div>
+                  <h3>${locale.lang === "en" ? "2. Daily Supermarket & Grocery Payments" : "2. 近所のスーパー・日用品でのBTC決済"}</h3>
+                  <p>${locale.lang === "en" ? "Spend Bitcoin at supermarkets, convenience stores, and pharmacies instantly via Visa/Mastercard crypto debit cards or digital gift cards." : "Visa/Mastercardプリペイドカード（Slash Card等）やデジタル金券を使い、イオン・西友・ライフ・コンビニ等でQUICPay/タッチ決済で1秒利用。"}</p>
+                  <a href="${prefix}/portal" class="button secondary small">🛒 ${locale.lang === "en" ? "View Grocery Guide →" : "スーパー決済ナビを見る →"}</a>
+                </div>
+
+                <!-- Store Onboarding -->
+                <div class="btc-zone-card">
+                  <div class="zone-card-icon">🏪</div>
+                  <h3>${locale.lang === "en" ? "3. Merchant POP Stand & POS Kit" : "3. 店舗・事業主向け 決済導入キット"}</h3>
+                  <p>${locale.lang === "en" ? "Personal stores, cafes, and creators can print physical register QR stands linked directly to their Cosmic Citizen ID & Lightning address." : "カフェ・個人商店・出展者が、自身の宇宙国民IDとLightningアドレスが入った店頭決済POPスタンドをワンクリック印刷・設置可能。"}</p>
+                  <a href="${prefix}/portal" class="button ghost small">🏪 ${locale.lang === "en" ? "Generate Register POP →" : "店頭決済POPを出力 →"}</a>
+                </div>
+              </div>
+            </section>
+
+            <!-- AI Toolkit Section -->
+            ${renderAiToolkitSection(locale)}
+
+            <!-- Archive Section -->
+            <section class="archive" id="articles" aria-labelledby="archive-title">
+              <div class="section-head"><div><span>ARCHIVE</span><h2 id="archive-title">${locale.ui.archiveTitle}</h2></div><div class="archive-tools"><label for="archive-search">${locale.ui.archiveFilter}</label><input id="archive-search" type="search" placeholder="${locale.ui.searchPlaceholder}" data-card-filter></div></div>
+              <div class="article-grid" data-card-grid>${allCards}</div>
+              <p class="empty-state" data-empty-state hidden>${locale.ui.notFound}</p>
+            </section>
+
+            <!-- Declaration -->
+            <section class="declaration">
+              <span>PARTICIPATE / EXIT</span>
+              <h2>${locale.ui.declarationTitle}</h2>
+              <p>${locale.ui.declarationDesc}</p>
+              <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                <a class="button primary" href="${prefix}/articles/cosmic-citizen-declaration">${locale.ui.readDeclaration}</a>
+                <a class="button" style="background: #5865F2; color: #fff; border: 1px solid #5865F2; font-weight: bold;" href="${site.discordUrl}" target="_blank" rel="noopener noreferrer">💬 ${locale.ui.joinParliament}</a>
+              </div>
+            </section>
           </div>
-        </div>
-      </section>
-
-      <section class="btc-zone-section" id="btc-zone" aria-labelledby="btc-zone-title">
-        <div class="section-head">
-          <div>
-            <span>06 / CURRENCY & BTC ZONE</span>
-            <h2 id="btc-zone-title">${locale.ui.btcZoneTitle}</h2>
-          </div>
-          <p>${locale.ui.btcZoneSub}</p>
-        </div>
-
-        <div class="btc-zone-grid">
-          <!-- Cosmic Currency UNI Protocol -->
-          <div class="btc-zone-card accent-uni" style="border-color: rgba(56, 189, 248, 0.35); background: linear-gradient(145deg, rgba(56, 189, 248, 0.08) 0%, rgba(15, 23, 42, 0.9) 100%);">
-            <div class="zone-card-icon" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;">🪐</div>
-            <h3 style="color: #38bdf8;">${locale.lang === "en" ? "0. Cosmic Currency UNI (10⁶ Grant)" : "0. 宇宙通貨 UNI（初期付与 10⁶ UNI）"}</h3>
-            <p>${locale.lang === "en" ? "Every registered citizen receives 1,000,000 UNI as an initial grant. A floating, non-state currency (~1 JPY scale) for instant P2P transfers & modular settlement." : "宇宙国民アカウントを開設した全市民に 1,000,000 UNI を初期交付。国家のシニョリッジを排し、約1円スケール（変動相場）で市民間直接決済・価値交換を実現。"}</p>
-            <a href="${prefix}/portal" class="button primary small" style="background: #0284c7; border-color: #38bdf8;">🪐 ${locale.lang === "en" ? "Open UNI Vault →" : "UNI ウォレットを開く →"}</a>
-          </div>
-
-          <!-- Salary Protocol -->
-          <div class="btc-zone-card">
-            <div class="zone-card-icon">💼</div>
-            <h3>${locale.lang === "en" ? "1. BTC Salary & Freelance Revenue" : "1. 給料・売上のビットコイン受取"}</h3>
-            <p>${locale.lang === "en" ? "Legally receive 10%-100% of your compensation in Bitcoin. Generate formal employer request forms instantly from My Portal." : "労働基準法に基づく合意書フォーマットを使い、給与や業務委託報酬をLightning/BTCで受け取る。マイポータルから公式申請書を1秒で出力可能。"}</p>
-            <a href="${prefix}/portal" class="button primary small">📄 ${locale.lang === "en" ? "Generate Salary Form →" : "給与受取 申請書を出力 →"}</a>
-          </div>
-
-          <!-- Supermarket Protocol -->
-          <div class="btc-zone-card">
-            <div class="zone-card-icon">🛒</div>
-            <h3>${locale.lang === "en" ? "2. Daily Supermarket & Grocery Payments" : "2. 近所のスーパー・日用品でのBTC決済"}</h3>
-            <p>${locale.lang === "en" ? "Spend Bitcoin at supermarkets, convenience stores, and pharmacies instantly via Visa/Mastercard crypto debit cards or digital gift cards." : "Visa/Mastercardプリペイドカード（Slash Card等）やデジタル金券を使い、イオン・西友・ライフ・コンビニ等でQUICPay/タッチ決済で1秒利用。"}</p>
-            <a href="${prefix}/portal" class="button secondary small">🛒 ${locale.lang === "en" ? "View Grocery Guide →" : "スーパー決済ナビを見る →"}</a>
-          </div>
-
-          <!-- Store Onboarding -->
-          <div class="btc-zone-card">
-            <div class="zone-card-icon">🏪</div>
-            <h3>${locale.lang === "en" ? "3. Merchant POP Stand & POS Kit" : "3. 店舗・事業主向け 決済導入キット"}</h3>
-            <p>${locale.lang === "en" ? "Personal stores, cafes, and creators can print physical register QR stands linked directly to their Cosmic Citizen ID & Lightning address." : "カフェ・個人商店・出展者が、自身の宇宙国民IDとLightningアドレスが入った店頭決済POPスタンドをワンクリック印刷・設置可能。"}</p>
-            <a href="${prefix}/portal" class="button ghost small">🏪 ${locale.lang === "en" ? "Generate Register POP →" : "店頭決済POPを出力 →"}</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="declaration">
-        <span>PARTICIPATE / EXIT</span>
-        <h2>${locale.ui.declarationTitle}</h2>
-        <p>${locale.ui.declarationDesc}</p>
-        <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
-          <a class="button primary" href="${prefix}/articles/cosmic-citizen-declaration">${locale.ui.readDeclaration}</a>
-          <a class="button" style="background: #5865F2; color: #fff; border: 1px solid #5865F2; font-weight: bold;" href="${site.discordUrl}" target="_blank" rel="noopener noreferrer">💬 ${locale.ui.joinParliament}</a>
-        </div>
+        </details>
       </section>`,
   });
 }
@@ -647,31 +1068,58 @@ function articlePage(article, rendered, locale) {
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": canonical
-    },
-    "headline": displayTitle ?? rendered.title,
-    "description": summary,
-    "image": [ogImageUrl],
-    "datePublished": `${article.date}T00:00:00+09:00`,
-    "dateModified": `${article.date}T00:00:00+09:00`,
-    "inLanguage": locale.lang,
-    "author": {
-      "@type": "Organization",
-      "name": site.author,
-      "url": site.baseUrl
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": site.name,
-      "url": site.baseUrl,
-      "logo": {
-        "@type": "ImageObject",
-        "url": `${site.baseUrl}${site.ogImageDefault}`
+    "@graph": [
+      {
+        "@type": "Article",
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": canonical
+        },
+        "headline": displayTitle ?? rendered.title,
+        "description": summary,
+        "image": [ogImageUrl],
+        "datePublished": `${article.date}T00:00:00+09:00`,
+        "dateModified": `${article.date}T00:00:00+09:00`,
+        "inLanguage": locale.lang,
+        "author": {
+          "@type": "Organization",
+          "name": site.author,
+          "url": site.baseUrl
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": site.name,
+          "url": site.baseUrl,
+          "logo": {
+            "@type": "ImageObject",
+            "url": `${site.baseUrl}${site.ogImageDefault}`
+          }
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": locale.nav.home,
+            "item": `${site.baseUrl}${prefix}/`
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": locale.nav.articles,
+            "item": `${site.baseUrl}${prefix}/#articles`
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": displayTitle ?? rendered.title,
+            "item": canonical
+          }
+        ]
       }
-    }
+    ]
   };
 
   return shell({
@@ -692,14 +1140,73 @@ function articlePage(article, rendered, locale) {
           <div class="article-meta"><span>${label}</span><time datetime="${article.date}">${formatDate(article.date, locale.lang)}</time><span>${readStr}</span></div>
           <h1>${inline(displayTitle ?? rendered.title)}</h1>
           <p>${escapeHtml(summary)}</p>
+
+          <!-- Social Share Bar (Top) -->
+          <div class="article-share-bar">
+            <span class="share-bar-label">${locale.lang === "en" ? "Share:" : "シェア:"}</span>
+            <a class="share-btn x-btn" href="https://x.com/intent/post?text=${encodeURIComponent(`${displayTitle ?? rendered.title}\n#UNIVGOV #宇宙政府\n${canonical}`)}" target="_blank" rel="noopener noreferrer" title="Post on 𝕏">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+              <span>${locale.ui.shareOnX}</span>
+            </a>
+            <a class="share-btn bluesky-btn" href="https://bsky.app/intent/compose?text=${encodeURIComponent(`${displayTitle ?? rendered.title}\n${canonical}`)}" target="_blank" rel="noopener noreferrer" title="Share on Bluesky">
+              <svg width="13" height="13" viewBox="0 0 568 501" fill="currentColor"><path d="M123.121 33.664C188.241 82.553 258.281 181.68 284 234.873c25.719-53.192 95.759-152.32 160.879-201.209C491.544 -2.947 568-23.774 568 69.176c0 18.57-10.518 156.402-16.691 178.437-21.439 76.516-99.397 96.046-168.434 84.347 120.59 20.468 151.782 89.378 85.125 157.739-75.973 77.915-163.754-19.562-184-63.699-20.246 44.137-108.027 141.614-184 63.699-66.657-68.361-35.465-137.271 85.125-157.739C116.088 343.659 38.13 324.129 16.691 247.613 10.518 225.578 0 87.746 0 69.176 0-23.774 76.456-2.947 123.121 33.664z"/></svg>
+              <span>Bluesky</span>
+            </a>
+            <a class="share-btn line-btn" href="https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(canonical)}&text=${encodeURIComponent(displayTitle ?? rendered.title)}" target="_blank" rel="noopener noreferrer" title="Share on LINE">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.391.084.922.258 1.057.592.121.303.079.777.039 1.085l-.171 1.027c-.053.303-.242 1.186 1.039.647 1.281-.54 6.911-4.069 9.428-6.967C23.013 14.484 24 12.518 24 10.304z"/></svg>
+              <span>LINE</span>
+            </a>
+            <button type="button" class="share-btn copy-btn" data-copy-link="${canonical}" title="Copy Link">
+              <span>🔗 ${locale.ui.shareCopyUrl}</span>
+            </button>
+          </div>
         </header>
         <div class="article-layout">
           <aside class="article-toc"><span>${locale.ui.toc}</span>${toc || `<a href="#article-body">${locale.ui.body}</a>`}</aside>
-          <div class="prose" id="article-body">${rendered.html}</div>
+          <div class="prose" id="article-body">
+            ${rendered.html}
+
+            <!-- Social Share Bar (Bottom of Content) -->
+            <div class="article-share-bar bottom-share-bar" style="margin-top: 48px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08);">
+              <span class="share-bar-label">${locale.lang === "en" ? "Share this thesis:" : "この論考を共有:"}</span>
+              <a class="share-btn x-btn primary-share" href="https://x.com/intent/post?text=${encodeURIComponent(`${displayTitle ?? rendered.title}\n#UNIVGOV #宇宙政府\n${canonical}`)}" target="_blank" rel="noopener noreferrer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                <span>${locale.ui.shareOnX}</span>
+              </a>
+              <a class="share-btn bluesky-btn" href="https://bsky.app/intent/compose?text=${encodeURIComponent(`${displayTitle ?? rendered.title}\n${canonical}`)}" target="_blank" rel="noopener noreferrer">
+                <svg width="14" height="14" viewBox="0 0 568 501" fill="currentColor"><path d="M123.121 33.664C188.241 82.553 258.281 181.68 284 234.873c25.719-53.192 95.759-152.32 160.879-201.209C491.544 -2.947 568-23.774 568 69.176c0 18.57-10.518 156.402-16.691 178.437-21.439 76.516-99.397 96.046-168.434 84.347 120.59 20.468 151.782 89.378 85.125 157.739-75.973 77.915-163.754-19.562-184-63.699-20.246 44.137-108.027 141.614-184 63.699-66.657-68.361-35.465-137.271 85.125-157.739C116.088 343.659 38.13 324.129 16.691 247.613 10.518 225.578 0 87.746 0 69.176 0-23.774 76.456-2.947 123.121 33.664z"/></svg>
+                <span>Bluesky</span>
+              </a>
+              <a class="share-btn line-btn" href="https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(canonical)}&text=${encodeURIComponent(displayTitle ?? rendered.title)}" target="_blank" rel="noopener noreferrer">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.391.084.922.258 1.057.592.121.303.079.777.039 1.085l-.171 1.027c-.053.303-.242 1.186 1.039.647 1.281-.54 6.911-4.069 9.428-6.967C23.013 14.484 24 12.518 24 10.304z"/></svg>
+                <span>LINE</span>
+              </a>
+              <button type="button" class="share-btn copy-btn" data-copy-link="${canonical}">
+                <span>🔗 ${locale.ui.shareCopyUrl}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- High-Conversion Registration CTA Banner -->
+        <div class="article-register-cta" style="margin: 40px auto; max-width: 820px; background: linear-gradient(135deg, rgba(2, 132, 199, 0.15) 0%, rgba(15, 23, 42, 0.95) 100%); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 16px; padding: 36px 24px; text-align: center; box-shadow: 0 10px 36px rgba(0, 0, 0, 0.5);">
+          <div style="font-size: 2.2rem; margin-bottom: 8px;">🪐 🛡️</div>
+          <h3 style="margin: 0 0 10px 0; color: #38bdf8; font-size: 1.35rem; font-weight: 700;">${locale.ui.articleRegisterCtaTitle}</h3>
+          <p style="font-size: 0.92rem; color: #cbd5e1; line-height: 1.7; max-width: 620px; margin: 0 auto 24px auto;">
+            ${locale.ui.articleRegisterCtaDesc}
+          </p>
+          <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+            <a href="${prefix}/portal" class="button primary" style="background: #0284c7; border-color: #38bdf8; color: #fff; font-size: 0.95rem; padding: 12px 24px; font-weight: 700; box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);">
+              ${locale.ui.articleRegisterCtaBtn}
+            </a>
+            <a href="${prefix}/#articles" class="button ghost" style="font-size: 0.9rem; padding: 12px 20px;">
+              ${locale.ui.readMore}
+            </a>
+          </div>
         </div>
 
         <!-- GitHub Law CTA Banner -->
-        <div style="margin: 40px auto; max-width: 800px; background: rgba(167, 139, 250, 0.08); border: 1px solid rgba(167, 139, 250, 0.25); border-radius: 12px; padding: 24px; text-align: center;">
+        <div style="margin: 40px auto; max-width: 820px; background: rgba(167, 139, 250, 0.08); border: 1px solid rgba(167, 139, 250, 0.25); border-radius: 12px; padding: 24px; text-align: center;">
           <div style="font-size: 1.5rem; margin-bottom: 8px;">⚖️ 🔀</div>
           <h3 style="margin: 0 0 8px 0; color: #a78bfa; font-size: 1.15rem;">${locale.lang === "en" ? "Review, Suggest Edits, or Fork This Law on GitHub" : "この条文・宇宙法典をGitHubで改訂・突っ込み・Forkする"}</h3>
           <p style="font-size: 0.88rem; color: #94a3b8; line-height: 1.6; margin: 0 0 16px 0;">
@@ -882,7 +1389,11 @@ function portalPage(locale) {
                   </div>
                 </div>
 
-                <div class="card-action-bar">
+                <div class="card-action-bar" style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;">
+                  <a href="https://x.com/intent/post?text=${encodeURIComponent(isEn ? "I've officially registered as a Cosmic Citizen and received 1,000,000 UNI grant!\n#UNIVGOV #UniverseGovernment\nhttps://univgov.pages.dev" : "【宇宙国民証 発行完了】\n宇宙政府（UNIVGOV）の宇宙国民アカウントを開設し、初期宇宙基本給 1,000,000 UNI を受給しました！🪐🛡️\n\n土地は選べなくても、帰属は選べる。\n#UNIVGOV #宇宙政府\nhttps://univgov.pages.dev")}" target="_blank" rel="noopener noreferrer" class="button" style="background: #000; border: 1px solid #38bdf8; color: #38bdf8; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    <span>${isEn ? "Share Citizen ID on 𝕏" : "𝕏 で国民証発行を報告 ↗"}</span>
+                  </a>
                   <button type="button" class="button secondary small" id="btn-print-card">🖨️ ${isEn ? "Print ID Card" : "国民証を印刷 / PDF"}</button>
                   <button type="button" class="button primary small" id="btn-print-salary-form" style="background: #f59e0b; border-color: #f59e0b; color: #000; font-weight: bold;">📄 ${isEn ? "Salary BTC Request PDF" : "給与BTC受取 申請書を出力"}</button>
                   <button type="button" class="button ghost small" id="btn-print-store-pop">🏪 ${isEn ? "Store BTC POP Stand" : "店舗用BTC決済POP出力"}</button>
@@ -942,15 +1453,15 @@ function portalPage(locale) {
                 <!-- Big Balance Banner -->
                 <div class="vault-balance-banner" style="background: rgba(7, 10, 17, 0.8); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 20px;">
                   <div style="font-size: 0.8rem; color: #8b9bb4; letter-spacing: 0.05em; margin-bottom: 6px;">
-                    ${isEn ? "CURRENT AVAILABLE UNI BALANCE" : "現在の保有残高（宇宙基本給＋取引残高）"}
+                    ${isEn ? "CURRENT AVAILABLE UNI BALANCE" : "現在の保有残高（初期分配＋取引残高）"}
                   </div>
                   <div style="font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 800; color: #38bdf8; font-family: monospace; letter-spacing: -0.5px; text-shadow: 0 0 20px rgba(56, 189, 248, 0.3);">
                     <span id="vault-uni-balance">1,000,000</span> <span style="font-size: 1.2rem; font-weight: 600; color: #94a3b8;">UNI</span>
                   </div>
                   <div style="font-size: 0.8rem; color: #64748b; margin-top: 6px;">
                     ${isEn 
-                      ? "🎉 1,000,000 UNI (10⁶ UNI) initial grant deposited upon citizenship issuance." 
-                      : "🎉 宇宙国民証発行に伴い、初期基本給 1,000,000 UNI（10⁶ UNI）が付与されています。"}
+                      ? "🎉 1,000,000 UNI (10⁶ UNI) initial bootstrapping grant deposited upon citizenship issuance (fixed supply)." 
+                      : "🎉 宇宙国民証発行に伴い、初期原資 1,000,000 UNI（10⁶ UNI・固定供給）が付与されています。"}
                   </div>
                 </div>
 
@@ -1638,7 +2149,9 @@ async function buildLocale(lang) {
   await write(`${prefix}index.html`, homepage(renderedArticles, locale));
   
   for (const article of articles) {
-    await write(`${prefix}articles/${article.slug}.html`, articlePage(article, renderedArticles.get(article.slug), locale));
+    const htmlContent = articlePage(article, renderedArticles.get(article.slug), locale);
+    await write(`${prefix}articles/${article.slug}.html`, htmlContent);
+    await write(`${prefix}articles/${article.slug}/index.html`, htmlContent);
   }
   
   await write(`${prefix}404.html`, notFoundPage(locale));

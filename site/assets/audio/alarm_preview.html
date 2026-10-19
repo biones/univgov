@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>宇宙政府 (UNIVGOV) 入会特典｜公式目覚まし音声プロトコル</title>
+  <style>
+    :root {
+      --bg: #070913;
+      --card-bg: rgba(16, 23, 42, 0.75);
+      --card-border: rgba(56, 189, 248, 0.2);
+      --primary: #38bdf8;
+      --primary-glow: rgba(56, 189, 248, 0.4);
+      --accent-gold: #fbbf24;
+      --accent-red: #f43f5e;
+      --accent-green: #34d399;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(ellipse at 50% -20%, rgba(56, 189, 248, 0.15), transparent 70%),
+        radial-gradient(circle at 80% 80%, rgba(251, 191, 36, 0.08), transparent 50%),
+        radial-gradient(circle at 20% 60%, rgba(139, 92, 246, 0.1), transparent 50%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      padding: 2.5rem 1rem 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid var(--card-border);
+      color: var(--primary);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.825rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: 2.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 50%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.lead {
+      color: var(--text-muted);
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Web Alarm Clock Bar */
+    .alarm-dock {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.15);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+    }
+
+    .clock-display {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .clock-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .clock-time {
+      font-size: 2rem;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-weight: 800;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    }
+
+    .alarm-controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .alarm-controls input[type="time"] {
+      background: #0b1120;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #fff;
+      font-size: 1.1rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .alarm-controls select {
+      background: #0b1120;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: #fff;
+      font-size: 0.9rem;
+      padding: 0.55rem 0.75rem;
+      border-radius: 8px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .btn {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.6rem 1.25rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      border: none;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #031127;
+      font-weight: 700;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
+    }
+
+    .btn-active {
+      background: linear-gradient(135deg, #e11d48, #f43f5e);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(244, 63, 94, 0.4);
+    }
+
+    /* Track Cards Grid */
+    .tracks-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .track-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      transition: border-color 0.25s, transform 0.2s;
+    }
+
+    .track-card:hover {
+      border-color: rgba(56, 189, 248, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .track-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.75rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .track-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      letter-spacing: 0.05em;
+    }
+
+    .tag-gold {
+      background: rgba(251, 191, 36, 0.15);
+      color: var(--accent-gold);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+    }
+
+    .tag-cyan {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .tag-red {
+      background: rgba(244, 63, 94, 0.15);
+      color: var(--accent-red);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    .tag-green {
+      background: rgba(52, 211, 153, 0.15);
+      color: var(--accent-green);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+
+    .track-duration {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-family: ui-monospace, monospace;
+    }
+
+    .track-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+
+    .track-catch {
+      font-size: 0.92rem;
+      color: var(--accent-gold);
+      font-weight: 600;
+      margin-bottom: 0.85rem;
+    }
+
+    .script-box {
+      background: rgba(2, 6, 23, 0.6);
+      border-left: 3px solid var(--primary);
+      padding: 0.85rem 1rem;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #e2e8f0;
+      margin-bottom: 1.25rem;
+    }
+
+    .player-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    audio {
+      flex: 1;
+      min-width: 250px;
+      height: 38px;
+      filter: invert(90%) hue-rotate(180deg);
+    }
+
+    .dl-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      font-size: 0.85rem;
+      padding: 0.5rem 0.9rem;
+      border-radius: 6px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .dl-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Modal / Alert Trigger */
+    .alarm-ringing-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 1000;
+      backdrop-filter: blur(16px);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 2rem;
+      text-align: center;
+      animation: pulseAlert 1.5s infinite;
+    }
+
+    @keyframes pulseAlert {
+      0%, 100% { box-shadow: inset 0 0 100px rgba(56, 189, 248, 0.3); }
+      50% { box-shadow: inset 0 0 160px rgba(244, 63, 94, 0.5); }
+    }
+
+    .alarm-ringing-box {
+      background: #0f172a;
+      border: 2px solid var(--accent-red);
+      padding: 2.5rem;
+      border-radius: 20px;
+      max-width: 480px;
+      width: 100%;
+    }
+
+    .instructions {
+      margin-top: 3rem;
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1.5rem;
+      font-size: 0.875rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+
+    .instructions h3 {
+      color: #fff;
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="badge">🪐 UNIVGOV PROTOCOL : REWARD #01</div>
+    <h1>宇宙国 入会特典 目覚まし音声</h1>
+    <p class="lead">
+      地球の重力圏にしがみついて二度寝しておる場合ではないぞ！<br>
+      国家機能を「選べる部品」にする新任宇宙市民のために開発された、4つの特製起床シークエンス。
+    </p>
+  </header>
+
+  <!-- Live Web Alarm Clock -->
+  <div class="alarm-dock">
+    <div class="clock-display">
+      <span class="clock-label">UNIVGOV STANDARD TIME (JST)</span>
+      <span class="clock-time" id="currentTime">00:00:00</span>
+    </div>
+    <div class="alarm-controls">
+      <input type="time" id="alarmTime" step="1">
+      <select id="alarmTrackSelect">
+        <option value="univgov_alarm_track1_leader.mp3">トラック1：元首の起床勅令</option>
+        <option value="univgov_alarm_track2_ai.mp3">トラック2：航法AIプロトコル</option>
+        <option value="univgov_alarm_track3_alert.mp3">トラック3：重力脱出アラート</option>
+        <option value="univgov_alarm_track4_cafe.mp3">トラック4：ステーションの穏やかな朝</option>
+      </select>
+      <button class="btn btn-primary" id="setAlarmBtn" onclick="toggleAlarm()">
+        ⏰ アラームをセット
+      </button>
+    </div>
+  </div>
+
+  <!-- Audio Tracks List -->
+  <div class="tracks-grid">
+
+    <!-- Track 1 -->
+    <div class="track-card">
+      <div class="track-header">
+        <span class="track-tag tag-gold">👑 元首・長老ボイス (CV: Grandpa)</span>
+        <span class="track-duration">⏱ 28秒 / 548KB</span>
+      </div>
+      <h2 class="track-title">01. 宇宙国元首の起床勅令</h2>
+      <div class="track-catch">「二度寝しておる場合ではないぞ！100万UNIの着金を確認するのじゃ！」</div>
+      <div class="script-box">
+        「起きよ！新任の宇宙市民よ、朝じゃ！地球の重力圏にしがみついて二度寝しておる場合ではないぞ！そなたの市民ウォレットには、すでに100万UNIの初期資金が着金しておるのじゃ！国家を運命の檻から選べる部品へと変える、偉大なる航海が始まるぞ。さあ目を開けて、ベッドから離脱するのじゃ！」
+      </div>
+      <div class="player-row">
+        <audio controls preload="none" src="univgov_alarm_track1_leader.mp3"></audio>
+        <a href="univgov_alarm_track1_leader.mp3" download class="dl-btn">📥 MP3を保存</a>
+      </div>
+    </div>
+
+    <!-- Track 2 -->
+    <div class="track-card">
+      <div class="track-header">
+        <span class="track-tag tag-cyan">🤖 航法AIボイス (CV: Kyoko)</span>
+        <span class="track-duration">⏱ 21秒 / 412KB</span>
+      </div>
+      <h2 class="track-title">02. 航法AIの起床プロトコル</h2>
+      <div class="track-catch">「本日も重力のしがらみからEXITし、自由なプロトコルへ接続してください。」</div>
+      <div class="script-box">
+        「ピピピ。おはようございます、宇宙市民。起床予定時刻に到達しました。バイタルサイン確認。本日も重力のしがらみからエグジットし、自由なプロトコルへ接続してください。起床シークエンスを開始します。良き一日を。」
+      </div>
+      <div class="player-row">
+        <audio controls preload="none" src="univgov_alarm_track2_ai.mp3"></audio>
+        <a href="univgov_alarm_track2_ai.mp3" download class="dl-btn">📥 MP3を保存</a>
+      </div>
+    </div>
+
+    <!-- Track 3 -->
+    <div class="track-card">
+      <div class="track-header">
+        <span class="track-tag tag-red">🚨 緊急警報ボイス (CV: Reed)</span>
+        <span class="track-duration">⏱ 19秒 / 373KB</span>
+      </div>
+      <h2 class="track-title">03. 重力圏脱出アラート（二度寝撲滅）</h2>
+      <div class="track-catch">「警告！このままでは満員電車に捕獲されます！スヌーズを押すな！」</div>
+      <div class="script-box">
+        「警報！警報！ベッドの引力が危険域に突入！このままでは地球の満員電車に捕獲されます！直ちにスヌーズを解除し、起床シークエンスを開始せよ！カウントダウン！スリー、ツー、ワン、離脱！」
+      </div>
+      <div class="player-row">
+        <audio controls preload="none" src="univgov_alarm_track3_alert.mp3"></audio>
+        <a href="univgov_alarm_track3_alert.mp3" download class="dl-btn">📥 MP3を保存</a>
+      </div>
+    </div>
+
+    <!-- Track 4 -->
+    <div class="track-card">
+      <div class="track-header">
+        <span class="track-tag tag-green">☕️ 宇宙ステーション・朝のラジオ (CV: Sandy)</span>
+        <span class="track-duration">⏱ 18秒 / 354KB</span>
+      </div>
+      <h2 class="track-title">04. 宇宙ステーションの穏やかな朝</h2>
+      <div class="track-catch">「太陽風はおだやか、軌道はクリアです。自由な一日を。」</div>
+      <div class="script-box">
+        「おはようございます。ユニブゴブ・ステーションから、穏やかな朝をお知らせします。太陽風はおだやか、軌道はクリアです。今日もあなたのペースで、自由な一日をはじめましょう。いってらっしゃい。」
+      </div>
+      <div class="player-row">
+        <audio controls preload="none" src="univgov_alarm_track4_cafe.mp3"></audio>
+        <a href="univgov_alarm_track4_cafe.mp3" download class="dl-btn">📥 MP3を保存</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Instructions for Mobile Alarm -->
+  <div class="instructions">
+    <h3>📱 スマホの目覚ましアラームに設定する方法</h3>
+    <ul style="padding-left: 1.25rem; margin-top: 0.5rem;">
+      <li><strong>iPhone (iOS):</strong> 上記の「MP3を保存」で端末にダウンロード → 「ファイル」アプリで確認 → 無料の「GarageBand」アプリに読み込んで着信音/通知音として書き出すか、「ショートカット」アプリで「指定時刻にこのサウンドを再生」に設定します。</li>
+      <li><strong>Android:</strong> 「MP3を保存」でダウンロード → 「時計」アプリの「アラーム音」設定から「デバイス内の音声を追加」を選択して登録完了！</li>
+      <li><strong>ブラウザ目覚まし:</strong> このページを開いたまま上部の「アラームをセット」を押せば、PCやタブレットがそのまま宇宙目覚まし時計になります。</li>
+    </ul>
+  </div>
+
+  <footer>
+    <p>© 宇宙政府 (UNIVGOV) 市民プロジェクト ｜ CC0 1.0 Universal / MIT</p>
+  </footer>
+</div>
+
+<!-- Alarm Ringing Overlay Modal -->
+<div class="alarm-ringing-overlay" id="ringingModal">
+  <div class="alarm-ringing-box">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">🚨</div>
+    <h2 style="font-size: 1.5rem; color: #fff; margin-bottom: 0.5rem;">起床シークエンス起動中！</h2>
+    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">重力圏からの離脱を確認してください。</p>
+    <button class="btn btn-active" style="width: 100%; font-size: 1.1rem; padding: 0.8rem;" onclick="stopAlarm()">
+      🛑 覚醒を完了（アラーム停止）
+    </button>
+  </div>
+</div>
+
+<script>
+  function updateClock() {
+    const now = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    document.getElementById('currentTime').textContent = timeStr;
+
+    if (alarmActive && alarmTargetTime) {
+      const currentShort = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+      if (currentShort === alarmTargetTime && now.getSeconds() === 0) {
+        triggerAlarm();
+      }
+    }
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  const nextMin = new Date(Date.now() + 60000);
+  const pad = (n) => String(n).padStart(2, '0');
+  document.getElementById('alarmTime').value = `${pad(nextMin.getHours())}:${pad(nextMin.getMinutes())}`;
+
+  let alarmActive = false;
+  let alarmTargetTime = null;
+  let activeAudioObj = null;
+
+  function toggleAlarm() {
+    const btn = document.getElementById('setAlarmBtn');
+    const input = document.getElementById('alarmTime');
+
+    if (!alarmActive) {
+      if (!input.value) {
+        alert('アラーム時刻を指定してください');
+        return;
+      }
+      alarmTargetTime = input.value;
+      alarmActive = true;
+      btn.textContent = `🔔 ${alarmTargetTime} にセット中 (解除)`;
+      btn.classList.add('btn-active');
+      btn.classList.remove('btn-primary');
+    } else {
+      alarmActive = false;
+      alarmTargetTime = null;
+      btn.textContent = '⏰ アラームをセット';
+      btn.classList.remove('btn-active');
+      btn.classList.add('btn-primary');
+    }
+  }
+
+  function triggerAlarm() {
+    const trackSrc = document.getElementById('alarmTrackSelect').value;
+    if (activeAudioObj) {
+      activeAudioObj.pause();
+    }
+    activeAudioObj = new Audio(trackSrc);
+    activeAudioObj.loop = true;
+    activeAudioObj.play().catch(e => console.log('Audio autoplay prevented:', e));
+
+    document.getElementById('ringingModal').style.display = 'flex';
+  }
+
+  function stopAlarm() {
+    if (activeAudioObj) {
+      activeAudioObj.pause();
+      activeAudioObj.currentTime = 0;
+    }
+    document.getElementById('ringingModal').style.display = 'none';
+    toggleAlarm();
+  }
+</script>
+
+</body>
+</html>

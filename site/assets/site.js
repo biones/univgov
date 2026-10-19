@@ -104,6 +104,29 @@ if (navigator.share && nativeShare) {
   });
 }
 
+// Article & Generic Link Copy Handler
+document.querySelectorAll("[data-copy-link]").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const isEn = document.documentElement.lang === "en";
+    const targetUrl = btn.getAttribute("data-copy-link") || window.location.href;
+    const span = btn.querySelector("span") || btn;
+    const originalText = span.innerHTML;
+    try {
+      await navigator.clipboard.writeText(targetUrl);
+      span.innerHTML = isEn ? "✓ Copied!" : "✓ コピー完了！";
+      btn.style.borderColor = "#10b981";
+      btn.style.color = "#10b981";
+      setTimeout(() => {
+        span.innerHTML = originalText;
+        btn.style.borderColor = "";
+        btn.style.color = "";
+      }, 2500);
+    } catch (e) {
+      alert(targetUrl);
+    }
+  });
+});
+
 // ============================================================================
 // Citizen Registration & Account Creation
 // ============================================================================
@@ -143,6 +166,9 @@ async function processGoogleAuthSuccess(authPayload) {
     const data = await res.json();
     if (data.success && data.sessionToken) {
       localStorage.setItem("univgov_session", data.sessionToken);
+      if (typeof window.gtag === "function") {
+        window.gtag("event", data.citizen?.created_at ? "login" : "sign_up", { method: "Google" });
+      }
       
       const authView = document.getElementById("portal-auth-view");
       if (authView && typeof window.renderPortalAuthenticatedUser === "function") {
@@ -977,3 +1003,89 @@ if (document.readyState === "loading") {
   }
 })();
 
+// AI Toolkit Prompt Copy & Context Copy Handler
+(function initAiToolkit() {
+  document.addEventListener("click", async (e) => {
+    const promptBtn = e.target.closest(".btn-copy-prompt");
+    if (promptBtn) {
+      const text = promptBtn.getAttribute("data-prompt-text");
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        const span = promptBtn.querySelector("span");
+        const origText = span ? span.textContent : "";
+        if (span) span.textContent = document.documentElement.lang === "en" ? "Copied!" : "コピー完了！";
+        promptBtn.style.background = "#10b981";
+        setTimeout(() => {
+          if (span) span.textContent = origText;
+          promptBtn.style.background = "";
+        }, 2000);
+      } catch (err) {
+        console.warn("Failed to copy prompt:", err);
+      }
+      return;
+    }
+
+    const contextBtn = e.target.closest("#btn-copy-context-url");
+    if (contextBtn) {
+      const url = contextBtn.getAttribute("data-context-url") || (window.location.origin + "/univgov_all.md");
+      try {
+        await navigator.clipboard.writeText(url);
+        const span = contextBtn.querySelector("span");
+        const origText = span ? span.textContent : "";
+        if (span) span.textContent = document.documentElement.lang === "en" ? "URL Copied!" : "URLコピー完了！";
+        contextBtn.style.background = "#10b981";
+        setTimeout(() => {
+          if (span) span.textContent = origText;
+          contextBtn.style.background = "";
+        }, 2000);
+      } catch (err) {
+        console.warn("Failed to copy context url:", err);
+      }
+      return;
+    }
+  });
+})();
+
+// Auto-expand #deep-dive when navigating to internal sections inside it
+(function setupDeepDiveAutoOpen() {
+  const deepDiveIds = new Set([
+    "rules", "laws", "articles", "parliament", "btc-zone", "ai-toolkit", "deep-dive"
+  ]);
+
+  function checkAndOpenHash(hash) {
+    if (!hash) return;
+    const cleanId = hash.replace(/^#/, "");
+    if (deepDiveIds.has(cleanId)) {
+      const details = document.getElementById("deep-dive");
+      if (details) {
+        details.open = true;
+        const target = document.getElementById(cleanId);
+        if (target) {
+          setTimeout(() => {
+            target.scrollIntoView({ behavior: "smooth" });
+          }, 50);
+        }
+      }
+    }
+  }
+
+  if (window.location.hash) {
+    checkAndOpenHash(window.location.hash);
+  }
+
+  window.addEventListener("hashchange", () => {
+    checkAndOpenHash(window.location.hash);
+  });
+
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest('a[href*="#"]');
+    if (!link) return;
+    try {
+      const url = new URL(link.href, window.location.href);
+      if (url.pathname === window.location.pathname && url.hash) {
+        checkAndOpenHash(url.hash);
+      }
+    } catch (_) {}
+  });
+})();
