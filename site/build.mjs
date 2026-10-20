@@ -140,7 +140,7 @@ const nav = (active = "", locale) => `
     <nav aria-label="Navigation">
       <a href="${getPrefix(locale.lang)}/">${locale.nav.home}</a>
       <a ${active === "guide" ? 'aria-current="page"' : ""} href="${getPrefix(locale.lang)}/articles/easy-guide" style="color: #fbbf24; font-weight: 700;">📖 ${locale.nav.guide}</a>
-      <a ${active === "articles" ? 'aria-current="page"' : ""} href="${getPrefix(locale.lang)}/#articles">${locale.nav.articles}</a>
+      <a ${active === "articles" ? 'aria-current="page"' : ""} href="${getPrefix(locale.lang)}/#articles" style="color: #fb923c; font-weight: 600;">🔥 ${locale.nav.articles}</a>
       <a href="${getPrefix(locale.lang)}/#rules">${locale.nav.rules}</a>
       <a href="${getPrefix(locale.lang)}/#laws">${locale.nav.spaceLaw}</a>
       <a href="${site.githubUrl}" target="_blank" rel="noopener noreferrer" style="color: #a78bfa; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;">
@@ -451,6 +451,36 @@ function renderAiToolkitSection(locale) {
   `;
 }
 
+function renderLatestArticlesSection(renderedArticles, locale, prefix, latestArticles) {
+  const ui = locale.ui;
+  const cardsHtml = latestArticles.map((item) => card(item, renderedArticles.get(item.slug), locale)).join("");
+
+  return `
+    <!-- Top Latest Articles Section -->
+    <section class="latest-articles-section" id="articles" aria-labelledby="latest-articles-title">
+      <div class="latest-articles-container">
+        <div class="section-head" style="margin-bottom: 24px;">
+          <div>
+            <span style="color: #fb923c;">01 / LATEST ESSAYS</span>
+            <h2 id="latest-articles-title">${ui.latestSectionTitle}</h2>
+          </div>
+          <p>${ui.latestSectionSub}</p>
+        </div>
+
+        <div class="latest-cards-grid">
+          ${cardsHtml}
+        </div>
+
+        <div class="latest-articles-footer">
+          <a href="#deep-dive" onclick="document.getElementById('deep-dive').open=true; document.getElementById('archive-title')?.scrollIntoView({behavior:'smooth'});" class="button ghost">
+            📚 <span>${ui.viewAllArchive}</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
 function renderExplainerSection(locale) {
   const ui = locale.ui;
   const prefix = getPrefix(locale.lang);
@@ -473,7 +503,7 @@ function renderExplainerSection(locale) {
       <div class="explainer-container">
         <div class="section-head" style="margin-bottom: 24px;">
           <div>
-            <span style="color: #38bdf8;">${locale.lang === "en" ? "01 / WHAT IS THIS?" : "01 / これはなに？"}</span>
+            <span style="color: #38bdf8;">${locale.lang === "en" ? "02 / WHAT IS THIS?" : "02 / これはなに？"}</span>
             <h2>${ui.explainTitle}</h2>
           </div>
           <p>${ui.explainSub}</p>
@@ -570,7 +600,7 @@ function renderStepsSection(locale, prefix) {
       <div class="steps-container">
         <div class="section-head" style="margin-bottom: 20px;">
           <div>
-            <span style="color: #38bdf8;">${locale.lang === "en" ? "02 / WHERE TO START" : "02 / はじめかた"}</span>
+            <span style="color: #38bdf8;">${locale.lang === "en" ? "03 / WHERE TO START" : "03 / はじめかた"}</span>
             <h2>${ui.stepsTitle}</h2>
           </div>
           <p>${ui.stepsSub}</p>
@@ -630,7 +660,7 @@ function renderFaqSection(locale) {
       <div class="faq-container">
         <div class="section-head" style="margin-bottom: 20px;">
           <div>
-            <span style="color: #38bdf8;">${locale.lang === "en" ? "03 / COMMON WORRIES" : "03 / よくある心配ごと"}</span>
+            <span style="color: #38bdf8;">${locale.lang === "en" ? "04 / COMMON WORRIES" : "04 / よくある心配ごと"}</span>
             <h2>${ui.faqSectionTitle}</h2>
           </div>
           <p>${ui.faqSectionSub}</p>
@@ -656,7 +686,7 @@ function renderGlossarySection(locale) {
     <section class="glossary-section easy-section" id="glossary">
       <div class="section-head" style="margin-bottom: 20px;">
         <div>
-          <span style="color: #38bdf8;">${locale.lang === "en" ? "04 / GLOSSARY" : "04 / 言葉の意味"}</span>
+          <span style="color: #38bdf8;">${locale.lang === "en" ? "05 / GLOSSARY" : "05 / 言葉の意味"}</span>
           <h2>${ui.glossaryTitle}</h2>
         </div>
         <p>${ui.glossarySub}</p>
@@ -670,6 +700,10 @@ function renderGlossarySection(locale) {
 
 function homepage(renderedArticles, locale) {
   const prefix = getPrefix(locale.lang);
+  const isEn = locale.lang === "en";
+  const sortedArticles = [...articles].sort((a, b) => b.date.localeCompare(a.date));
+  const latestArticle = sortedArticles[0];
+  const topLatestArticles = sortedArticles.slice(0, 3);
   const featured = articles.filter((item) => item.featured).map((item) => card(item, renderedArticles.get(item.slug), locale)).join("");
   const allCards = articles.map((item) => card(item, renderedArticles.get(item.slug), locale)).join("");
   const canonical = `${site.baseUrl}${prefix}/`;
@@ -738,18 +772,28 @@ function homepage(renderedArticles, locale) {
           <img src="/assets/univgov-logo.jpg" alt="" width="540" height="540">
         </div>
         <div class="hero-intro">
+          <div class="hero-latest-bar">
+            <a href="${prefix}/articles/${latestArticle.slug}" class="hero-latest-pill">
+              <span class="pill-badge">${locale.ui.latestBadge} (${latestArticle.date.replaceAll("-", ".")})</span>
+              <span class="pill-title">${inline(isEn ? latestArticle.displayTitleEn : latestArticle.displayTitle)}</span>
+              <span class="pill-arrow">${locale.ui.read}</span>
+            </a>
+          </div>
           <p class="kicker">${locale.ui.heroKicker}</p>
           <h2>${locale.ui.heroTitle}</h2>
           <p class="lead">${locale.ui.heroLead1}</p>
           <p class="lead">${locale.ui.heroLead2}</p>
           <div class="hero-actions">
             <a class="button hero-register-btn" href="#register" style="background: #0284c7; border-color: #38bdf8; color: #fff; box-shadow: 0 0 16px rgba(56, 189, 248, 0.35); font-weight: 700;">${locale.ui.heroRegisterBtn}</a>
-            <a class="button primary" href="${prefix}/articles/easy-guide" style="background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; color: #38bdf8; font-weight: 700;">${locale.lang === "en" ? "📖 Complete Guide (approx. 8 min)" : "📖 3分で完全にわかる宇宙政府のすべて"}</a>
+            <a class="button primary" href="${prefix}/articles/${latestArticle.slug}" style="background: linear-gradient(135deg, rgba(234, 88, 12, 0.25) 0%, rgba(194, 65, 12, 0.35) 100%); border-color: #ea580c; color: #fb923c; font-weight: 700;">🔥 ${isEn ? "Latest Essay" : "最新論考を読む"}</a>
+            <a class="button ghost" href="#articles">📖 ${locale.ui.readArticles}</a>
+            <a class="button ghost" href="${prefix}/articles/easy-guide" style="background: rgba(56, 189, 248, 0.1); border-color: rgba(56, 189, 248, 0.3); color: #38bdf8;">${isEn ? "Guide" : "入門解説"}</a>
             <a class="button ghost" href="#deep-dive" onclick="document.getElementById('deep-dive').open=true;">${locale.ui.readPrinciples}</a>
-            <a class="button ghost" href="#articles" onclick="document.getElementById('deep-dive').open=true;">${locale.ui.readArticles}</a>
           </div>
         </div>
       </section>
+
+      ${renderLatestArticlesSection(renderedArticles, locale, prefix, topLatestArticles)}
 
       ${renderExplainerSection(locale)}
 
@@ -762,7 +806,7 @@ function homepage(renderedArticles, locale) {
       <section class="registration" id="register" aria-labelledby="register-title">
         <div class="section-head">
           <div>
-            <span style="color: #38bdf8;">${locale.lang === "en" ? "05 / REGISTRATION & UNI GRANT" : "05 / 市民登録とUNI付与"}</span>
+            <span style="color: #38bdf8;">${locale.lang === "en" ? "06 / REGISTRATION & UNI GRANT" : "06 / 市民登録とUNI付与"}</span>
             <h2 id="register-title">${locale.ui.registerTitle}</h2>
           </div>
           <p>${locale.ui.registerDesc}</p>
@@ -823,7 +867,7 @@ function homepage(renderedArticles, locale) {
         <details class="deep-dive-details" id="deep-dive">
           <summary class="deep-dive-summary">
             <div class="deep-dive-summary-head">
-              <span class="deep-dive-kicker">06 / DEEP DIVE</span>
+              <span class="deep-dive-kicker">07 / DEEP DIVE</span>
               <h2 id="deep-dive-title" style="margin: 8px 0; font-size: clamp(22px, 2.5vw, 32px); color: #f1f5f9;">${locale.ui.moreTitle}</h2>
               <p style="margin: 0; color: #94a3b8; font-size: 14px; max-width: 760px;">${locale.ui.moreSub}</p>
             </div>
@@ -1031,7 +1075,7 @@ function homepage(renderedArticles, locale) {
             ${renderAiToolkitSection(locale)}
 
             <!-- Archive Section -->
-            <section class="archive" id="articles" aria-labelledby="archive-title">
+            <section class="archive" id="archive" aria-labelledby="archive-title">
               <div class="section-head"><div><span>ARCHIVE</span><h2 id="archive-title">${locale.ui.archiveTitle}</h2></div><div class="archive-tools"><label for="archive-search">${locale.ui.archiveFilter}</label><input id="archive-search" type="search" placeholder="${locale.ui.searchPlaceholder}" data-card-filter></div></div>
               <div class="article-grid" data-card-grid>${allCards}</div>
               <p class="empty-state" data-empty-state hidden>${locale.ui.notFound}</p>

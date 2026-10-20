@@ -2663,3 +2663,104 @@ button, input { font: inherit; }
   }
 }
 
+/* ==========================================================================
+   Hero Latest Announcement Bar & Top Latest Articles Section
+   ========================================================================== */
+.hero-latest-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.hero-latest-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(249, 115, 22, 0.1);
+  border: 1px solid rgba(249, 115, 22, 0.35);
+  border-radius: 999px;
+  padding: 6px 16px 6px 6px;
+  text-decoration: none;
+  color: #f1f5f9;
+  font-size: 0.9rem;
+  box-shadow: 0 0 15px rgba(249, 115, 22, 0.15);
+  transition: all 0.2s ease;
+  max-width: 100%;
+}
+
+.hero-latest-pill:hover {
+  background: rgba(249, 115, 22, 0.18);
+  border-color: #fb923c;
+  transform: translateY(-1px);
+  box-shadow: 0 0 22px rgba(249, 115, 22, 0.3);
+}
+
+.hero-latest-pill .pill-badge {
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  padding: 4px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.hero-latest-pill .pill-title {
+  font-weight: 600;
+  color: #f8fafc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 600px;
+}
+
+.hero-latest-pill .pill-arrow {
+  color: #fb923c;
+  font-weight: 700;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  transition: transform 0.15s ease;
+}
+
+.hero-latest-pill:hover .pill-arrow {
+  transform: translateX(3px);
+}
+
+@media (max-width: 768px) {
+  .hero-latest-pill {
+    padding: 6px 12px 6px 6px;
+    gap: 8px;
+    font-size: 0.82rem;
+  }
+  .hero-latest-pill .pill-title {
+    max-width: 200px;
+  }
+}
+
+/* Latest Articles Top Section */
+.latest-articles-section {
+  padding: 60px clamp(20px, 5vw, 60px);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.6) 0%, rgba(9, 12, 16, 0.95) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.latest-articles-container {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.latest-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.latest-articles-footer {
+  margin-top: 36px;
+  display: flex;
+  justify-content: center;
+}
+
+
