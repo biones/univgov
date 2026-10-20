@@ -443,6 +443,22 @@ export const articles = [
     summaryEn: "A complete jargon-free guide to UNIVGOV: dismantling the state as a mandatory telecom bundle, exposing the election responsibility trap, answering real-world objections, our 5 practical tools, and the guarantee of 1-click total EXIT."
   },
   {
+    slug: "destruction-of-bullshit-jobs",
+    displayTitle: "ブルシット・ジョブの完全解体――なぜ「すべての仕事は効果ゼロがデフォルト」であり、ホワイトカラーの9割はAIで代替可能なのか",
+    displayTitleEn: "Deconstructing Bullshit Jobs: The 'Zero-Effect Default' Null Hypothesis and Why 90% of White-Collar Work Can Be Replaced by AI",
+    source: "site/content/destruction-of-bullshit-jobs.md",
+    sourceEn: "site/content/en/destruction-of-bullshit-jobs.md",
+    label: "労働・制度解体",
+    labelEn: "Labor Deconstruction",
+    date: "2026-10-20",
+    read: "約12分",
+    readEn: "12 min read",
+    accent: "orange",
+    featured: true,
+    summary: "市役所職員も民間ホワイトカラーも「仕事の効果はゼロ（Δ=0）」を初期仮説として立証責任を逆転せよ。労働行為と成果の峻別、無意味な本社維持費の価格転嫁、GDP信仰の欺瞞、そしてAI時代に「仕事をなくすこと」と「人を困窮させること」を切り離す生産・分配プロトコル。",
+    summaryEn: "Reversing the burden of proof so all administrative and white-collar work defaults to a zero-effect null hypothesis (Δ=0). Distinguishing labor hours from outcomes, exposing how corporate overhead inflates prices, debunking GDP worship, and unbundling production from income distribution in the AI era."
+  },
+  {
     slug: "banking-cartel-parasite",
     displayTitle: "なぜ銀行の振込手数料は不当に高いのか？公的インフラ独占と日銀・メガバンクの搾取構造を解体する",
     displayTitleEn: "Deconstructing Bank Rents: How Public Monopoly and Regulatory Barriers Manufacture Unearned Spreads",

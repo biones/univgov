@@ -107,6 +107,7 @@ async function generateCompleteMarkdownJa() {
   doc.push(`  2. [土地所有というフィクション](#2-2-土地所有というフィクション)`);
   doc.push(`  3. [法律を神棚からゴミ箱へ](#2-3-法律を神棚からゴミ箱へ)`);
   doc.push(`  4. [国家・軍隊・財閥の三位一体](#2-4-国家軍隊財閥の三位一体)`);
+  doc.push(`  5. [ブルシット・ジョブの完全解体――「すべての仕事は効果ゼロがデフォルト」という帰無仮説とAI時代の生産・分配プロトコル](#2-5-ブルシットジョブの完全解体すべての仕事は効果ゼロがデフォルトという帰無仮説とai時代の生産分配プロトコル)`);
   doc.push(`- **第3部：実践プロトコル・設計応答 (Action Protocols & Self-Audit)**`);
   doc.push(`  1. [国家を「有料外部ベンダー」へ降格せよ](#3-1-国家を有料外部ベンダーへ降格せよ)`);
   doc.push(`  2. [今すぐできるEXIT――公金利権の無視と脱出](#3-2-今すぐできるexit公金利権の無視と脱出)`);
@@ -238,6 +239,17 @@ async function generateCompleteMarkdownJa() {
   doc.push(``);
   const zaibatsuContent = await loadFileContent("site/content/state-military-zaibatsu.md");
   doc.push(adjustHeadings(zaibatsuContent, 4));
+  doc.push(``);
+  doc.push(`---`);
+  doc.push(``);
+
+  // 2-5. ブルシット・ジョブの完全解体
+  doc.push(`### 2-5. ブルシット・ジョブの完全解体――「すべての仕事は効果ゼロがデフォルト」という帰無仮説とAI時代の生産・分配プロトコル`);
+  doc.push(`> **公開日**: 2026-10-20 | **分類**: 労働・制度解体`);
+  doc.push(`> **要約**: 市役所職員も民間ホワイトカラーも「仕事の効果はゼロ（Δ=0）」を初期仮説として立証責任を逆転せよ。労働行為と成果の峻別、無意味な本社維持費の価格転嫁、GDP信仰の欺瞞、そしてAI時代に「仕事をなくすこと」と「人を困窮させること」を切り離す生産・分配プロトコル。`);
+  doc.push(``);
+  const bullshitJobsContent = await loadFileContent("site/content/destruction-of-bullshit-jobs.md");
+  doc.push(adjustHeadings(bullshitJobsContent, 4));
   doc.push(``);
   doc.push(`---`);
   doc.push(``);
@@ -391,6 +403,7 @@ async function generateCompleteMarkdownEn() {
   doc.push(`  2. [The Fiction of Land Ownership](#2-2-the-fiction-of-land-ownership)`);
   doc.push(`  3. [From the Altar to the Trash Can: Law is Disposable](#2-3-from-the-altar-to-the-trash-can-law-is-disposable)`);
   doc.push(`  4. [The Trinity of State, Military, and Zaibatsu](#2-4-the-trinity-of-state-military-and-zaibatsu)`);
+  doc.push(`  5. [Deconstructing Bullshit Jobs: The 'Zero-Effect Default' Null Hypothesis](#2-5-deconstructing-bullshit-jobs-the-zero-effect-default-null-hypothesis)`);
   doc.push(`- **Part 3: Action Protocols and Self-Audit**`);
   doc.push(`  1. [Downgrading the State to a Paid External Vendor](#3-1-downgrading-the-state-to-a-paid-external-vendor)`);
   doc.push(`  2. [Practical EXIT Protocol: Boycotting the Cartel](#3-2-practical-exit-protocol-boycotting-the-cartel)`);
@@ -476,6 +489,13 @@ async function generateCompleteMarkdownEn() {
   doc.push(`### 2-4. The Trinity of State, Military, and Zaibatsu`);
   const zaibatsuEn = await loadFileContent("site/content/en/state-military-zaibatsu.md");
   doc.push(adjustHeadings(zaibatsuEn, 4));
+  doc.push(``);
+  doc.push(`---`);
+  doc.push(``);
+
+  doc.push(`### 2-5. Deconstructing Bullshit Jobs: The 'Zero-Effect Default' Null Hypothesis`);
+  const bullshitJobsEn = await loadFileContent("site/content/en/destruction-of-bullshit-jobs.md");
+  doc.push(adjustHeadings(bullshitJobsEn, 4));
   doc.push(``);
   doc.push(`---`);
   doc.push(``);
