@@ -463,8 +463,8 @@ export const articles = [
     readEn: "12 min read",
     accent: "orange",
     featured: true,
-    summary: "市役所職員も民間ホワイトカラーも「仕事の効果はゼロ（Δ=0）」を初期仮説として立証責任を逆転せよ。労働行為と成果の峻別、無意味な本社維持費の価格転嫁、GDP信仰の欺瞞、そしてAI時代に「仕事をなくすこと」と「人を困窮させること」を切り離す生産・分配プロトコル。",
-    summaryEn: "Reversing the burden of proof so all administrative and white-collar work defaults to a zero-effect null hypothesis (Δ=0). Distinguishing labor hours from outcomes, exposing how corporate overhead inflates prices, debunking GDP worship, and unbundling production from income distribution in the AI era."
+    summary: "ホワイトカラーの作業は政策や新薬と同じく「効果ゼロ（Δ=0）」をデフォルトとして立証責任を逆転せよ。飽和した現代において効果検証のない労働は全く尊敬の対象ではない。労働行為と成果の峻別、本社維持費の価格転嫁、AI時代に「仕事をなくすこと」と「人を困窮させること」を切り離す生産・分配プロトコル。",
+    summaryEn: "Indirect white-collar tasks default to a zero-effect null hypothesis (Δ=0), just like new drugs and policies. In a saturated era, unverified labor commands zero respect. Distinguishing effort from outcomes and unbundling production from income distribution in the age of AI."
   },
   {
     slug: "banking-cartel-parasite",

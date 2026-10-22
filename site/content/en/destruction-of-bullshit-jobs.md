@@ -7,9 +7,9 @@ We must challenge this premise from the ground up. **The mere act of working has
 When we pursue this principle to its logical conclusion, it goes far beyond a superficial complaint that "there are too many pointless jobs." It reveals a structural framework that overturns our institutions: **reversing the burden of proof for administrative and white-collar work (the zero-effect null hypothesis)**, **replacing 90% of white-collar tasks with AI**, **separating labor from reward across four distinct criteria**, **exposing how corporate overhead inflates consumer prices**, **questioning GDP worship and ownership-based control**, and **completely unbundling production from income distribution**.
 
 > **💡 Core Summary in 3 Minutes (5 Key Takeaways)**
-> 1. **Reversing the Burden of Proof ("Zero Effect" as the Default Null Hypothesis)**: Whether for municipal clerks or corporate staff, having a budget and staying busy every day is only proof that a job *exists*, not that it produces *results*. Unless a positive difference compared to the absence of that work (`Δ = Y(with work) - Y(without work)`) is demonstrated, the default initial hypothesis must be zero effect (`Δ = 0`).
+> 1. **Reversing the Burden of Proof ("Zero Effect" as the Default Null Hypothesis)**: For indirect white-collar and administrative tasks whose value is not self-evident, zero effect is the default—just as with new drugs and public policies. Staying busy is only proof that a job exists, not that it produces results. Especially today, with white-collar work widely considered saturated, rigorous empirical verification of counterfactual impact (`Δ = Y(with work) - Y(without work)`) is urgent.
 > 2. **Society Would Run Smoothly Even If 90% of White-Collar Work Were Replaced by AI Today**: This is not an attack on individual competence, but a question of structural necessity. There is no justification for employing massive numbers of humans for meetings about meetings, internal slide decks, repetitive reporting, and multi-layered approval rituals. With AI, we can discard the assumption of human execution and redesign workflows entirely.
-> 3. **Labor Activity Itself Has No Intrinsic Value**: Among "Ability," "Labor Activity (hours/effort)," "Outcome," and "Status," only **Outcome** should determine reward. Someone who automates a process and eliminates their own job creates far greater social value than someone who works 100 hours producing reports nobody reads.
+> 3. **Labor Activity Itself Has No Intrinsic Value and Commands Zero Respect**: Among "Ability," "Labor Activity (hours/effort)," "Outcome," and "Status," only **Outcome** should determine reward. Diligently laboring on unverified, pointless tasks is not an object of respect. Someone who automates a process and eliminates their own job creates far greater social value than someone who works 100 hours producing reports nobody reads.
 > 4. **Corporations Pass the Cost of Feeding Redundant Staff onto Consumers**: Even for commodity products requiring no complex R&D (such as beer or canned drinks), prices remain artificially high to fund prestigious downtown headquarters, bloated management layers, and legacy advertising. Companies exist to create value, not to sustain internal employment.
 > 5. **Separate "Eliminating Jobs" from "Impoverishing People"**: Reducing required human labor through AI is a triumph of technological progress. The real problem lies not in production, but in our broken distribution mechanism that ties income exclusively to employment. Instead of manufacturing bullshit jobs to distribute wages, we must redesign distribution itself.
 
@@ -39,6 +39,10 @@ Because "activity volume" is easy to count, government agencies and corporations
 
 This perspective aligns directly with causal inference and statistical hypothesis testing in data science.
 
+Consider pharmaceutical regulation: when evaluating a candidate medicine, regulators never assume "this drug must work." **The default baseline (null hypothesis) is that it has zero effect compared to a placebo (`Δ = 0`), and its efficacy is recognized only after rigorous randomized controlled trials prove otherwise.** Public policy evaluation follows the exact same logic.
+
+Indirect administrative and white-collar routines that produce no clear tangible outcome must be subjected to this exact scientific rigor. **Especially today, as white-collar labor markets are widely recognized as saturated, the necessity of verifying whether a task produces any positive outcome compared to its total absence has never been higher.**
+
 If we define the true effect of a job or policy as `Δ` (Delta), what we need to verify is not whether the task was executed, but the difference between the outcome with the task, `Y(with work)`, and the counterfactual outcome without it, `Y(without work)`:
 
 > **`Δ = Y(with work) - Y(without work)`**
@@ -47,7 +51,7 @@ If the real-world outcome remains unchanged whether the task is performed or not
 
 Of course, some public services and organizational functions have effects that are difficult to quantify perfectly. However, **the fact that an effect is difficult to measure is never a valid reason to automatically assume the effect is positive.**
 
-Just as scientific statistics begins with the **null hypothesis (`Δ = 0`, no effect)** and places the burden of proof on those claiming an effect, society must treat **zero effect as the default initial hypothesis for all institutional work**. Those who wish to justify the continuation of a position, regulation, or budget bear the burden of demonstrating reasonable evidence of positive net impact.
+Just as with new drugs and public policies, society must treat **zero effect as the default initial hypothesis for all institutional work**. Those who wish to justify the continuation of a position, regulation, or budget bear the burden of demonstrating reasonable evidence of positive net impact.
 
 ### The Consequence for Bullshit Jobs
 
@@ -98,9 +102,9 @@ While **Outcome (3)** should be the primary determinant of reward, real-world or
 
 Separating these four criteria yields a direct conclusion:
 
-> **The mere fact that someone is working hard or logging long hours does not mean their work has any social value whatsoever.**
+> **The mere fact that someone is working hard or logging long hours does not mean their work has any social value whatsoever. Furthermore, unverified, pointless labor activity is entirely unworthy of respect.**
 
-If an employee works until midnight every day producing hundreds of pages of internal slides that improve zero decisions, are read by no one, and have no impact on the final product, rewarding them for their "hard work" is irrational.
+If an employee works until midnight every day producing hundreds of pages of internal slides that improve zero decisions, are read by no one, and have no impact on the final product, rewarding them for their "hard work" is irrational. Sanctifying useless busywork purely out of emotional sympathy for someone's sweat and late hours only protects institutional parasites.
 
 Conversely, someone who solves a critical problem in ten minutes, or an engineer who writes a script or AI workflow to completely automate and eliminate their own job, has not produced less value because their labor time was short. **Eliminating a job so that no human ever has to do it again is infinitely more valuable than spending 40 years diligently performing unnecessary work.**
 
