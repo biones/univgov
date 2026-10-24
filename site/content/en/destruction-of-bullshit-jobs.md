@@ -108,6 +108,16 @@ If an employee works until midnight every day producing hundreds of pages of int
 
 Conversely, someone who solves a critical problem in ten minutes, or an engineer who writes a script or AI workflow to completely automate and eliminate their own job, has not produced less value because their labor time was short. **Eliminating a job so that no human ever has to do it again is infinitely more valuable than spending 40 years diligently performing unnecessary work.**
 
+### Shattering the Greatest Illusion: "If They Get Paid a Salary, Their Work Must Have Value"
+
+Even after following this logic, many readers still struggle to shake one intuitive feeling: *"Still, if those workers are getting paid a proper salary every month, doesn't that prove someone needs their work?"*
+
+To break this spell, we must recognize that salaries are funded not only by **(1) Productive Value (`Δ > 0`)**, but also by **(2) Tollbooth Rents** (erecting legal, licensing, or bureaucratic barriers across a public path and splitting the compulsory tolls extracted from captive users) and **(3) Disguised Welfare** (paying conditional basic income in exchange for eight hours of daily bureaucratic theater to prevent mass white-collar unemployment and political revolt).
+
+At the macro level, commercial bank remittance and settlement can be completely replaced by Bitcoin and P2P protocols (as proven when Ireland's banks shut down for six months in 1970 without collapsing the economy, and by Thomas Philippon's 130-year study of financial intermediation rents), while 99% of municipal clerical work can be automated away as proven by Estonia's X-Road. Bankers, bureaucrats, and middlemen receive salaries not because their work is indispensable, but because regulations and disconnected systems are deliberately preserved to justify their paychecks.
+
+> **👉 Read the Full Empirical Analysis**: [*Why Do Valueless Jobs Command Salaries? Shattering the "Salary = Proof of Value" Illusion and the Empirical Evidence That Society Runs Without Banks, Bureaucrats, and Middlemen*](/en/articles/salary-is-not-value-evidence)
+
 ## 4. How Corporations Manufacture Redundant Work and Pass the Cost to Consumers
 
 One might assume that private corporations, driven by profit, naturally eliminate bullshit jobs unlike government bureaucracies. Yet examining large corporations and oligopolistic markets reveals the same institutional pathology.
